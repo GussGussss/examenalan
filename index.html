@@ -1,0 +1,499 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guía Examen Unidad 3 - IA/ML</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class'}</script>
+<style>
+body{font-family:system-ui,sans-serif}
+.th h4{font-weight:700;margin:1.1rem 0 .4rem;font-size:1.05rem;color:#4f46e5}.dark .th h4{color:#a5b4fc}
+.th p,.th ul,.th ol{margin:.4rem 0}.th ul{list-style:disc;padding-left:1.4rem}.th ol{list-style:decimal;padding-left:1.4rem}.th li{margin:.2rem 0}
+.th table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:.9rem;display:block;overflow-x:auto}.th td,.th th{border:1px solid #cbd5e1;padding:.35rem .5rem;text-align:left}.dark .th td,.dark .th th{border-color:#475569}.th th{background:#e0e7ff}.dark .th th{background:#312e81}
+.aclar{margin:.8rem 0;border:1px solid #f59e0b;border-radius:.6rem;background:#fffbeb;padding:.5rem .8rem}.dark .aclar{background:#3b2f0b}.aclar summary{cursor:pointer;font-weight:600}.aclar div{margin-top:.5rem}
+.fc{perspective:1000px;height:240px}.fci{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;cursor:pointer}.fc.f .fci{transform:rotateY(180deg)}
+.fcf,.fcb{position:absolute;inset:0;backface-visibility:hidden;border-radius:1rem;display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5rem;font-size:1.2rem;font-weight:600}
+.fcf{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}.fcb{background:linear-gradient(135deg,#10b981,#0d9488);color:#fff;transform:rotateY(180deg)}
+.opt{display:block;width:100%;text-align:left;padding:.7rem .9rem;border:2px solid #cbd5e1;border-radius:.7rem;margin:.4rem 0}.dark .opt{border-color:#475569}
+.opt:hover:not(:disabled){border-color:#6366f1}.opt.ok{border-color:#10b981;background:#d1fae5;color:#064e3b}.opt.bad{border-color:#ef4444;background:#fee2e2;color:#7f1d1d}
+mark{background:#fde047;color:#000}
+</style></head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+<header class="sticky top-0 z-20 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 px-3 py-2">
+<div class="flex items-center gap-2"><button id="mb" class="lg:hidden text-2xl px-2">☰</button><b class="hidden sm:block">🧠 Guía Unidad 3</b>
+<input id="se" type="search" placeholder="🔍 Buscar término, fórmula o concepto…" class="flex-1 min-w-0 rounded-lg border px-3 py-1.5 bg-slate-100 dark:bg-slate-700 dark:border-slate-600">
+<button id="th" class="text-xl px-2" title="Modo oscuro/claro">🌓</button></div>
+<div class="mt-2 flex items-center gap-2 text-xs"><span id="pt" class="w-28">Progreso 0%</span><div class="flex-1 h-2 rounded bg-slate-200 dark:bg-slate-700"><div id="pb" class="h-2 rounded bg-indigo-500" style="width:0"></div></div></div></header>
+<div class="flex"><nav id="nv" class="hidden lg:block fixed lg:sticky top-[76px] z-10 w-72 shrink-0 h-[calc(100vh-76px)] overflow-y-auto bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-3 text-sm"></nav>
+<main id="mn" class="flex-1 min-w-0 p-4 max-w-4xl mx-auto"></main></div><script>
+const A=(t,h)=>`<details class="aclar"><summary>💡 Aclaración del Profesor: ${t}</summary><div>${h}</div></details>`;
+const S=[
+{id:'dw',n:'Data Warehouse y OLAP',ic:'🗄️',th:`
+<p>Un <b>Data Warehouse (DW)</b> es una base de datos centralizada diseñada <i>exclusivamente</i> para analizar y tomar decisiones, con datos estructurados de varias fuentes.</p>
+<h4>4 propiedades (Inmon)</h4>
+<ul><li><b>Orientado a temas:</b> organizado por áreas del negocio (ventas, clientes, inventario), no por procesos operativos.</li>
+<li><b>Integrado:</b> consolida fuentes y armoniza inconsistencias (género M/F vs 1/0 → se estandariza).</li>
+<li><b>Variante en el tiempo:</b> guarda historial de años para detectar tendencias (una BD normal guarda solo el estado actual).</li>
+<li><b>No volátil:</b> solo lectura y carga; lo que entra no se modifica.</li></ul>
+<h4>OLTP vs OLAP</h4>
+<table><tr><th></th><th>OLTP</th><th>OLAP</th></tr>
+<tr><td>Objetivo</td><td>Operación diaria (cobrar, registrar)</td><td>Análisis estratégico</td></tr>
+<tr><td>Operaciones</td><td>Insertar/actualizar/borrar constantemente</td><td>Consultar y leer grandes volúmenes</td></tr>
+<tr><td>Datos</td><td>Transacciones individuales en tiempo real</td><td>Agregados, resumidos e históricos</td></tr>
+<tr><td>Ejemplo</td><td>Registrar compra en caja</td><td>Ventas totales por región último trimestre</td></tr></table>
+<h4>Modelado multidimensional</h4>
+<ul><li><b>Tabla de hechos:</b> centro; métricas numéricas (monto, cantidad, costo).</li>
+<li><b>Tablas de dimensión:</b> rodean los hechos; contexto para filtrar/agrupar (tiempo, cliente, sucursal).</li>
+<li><b>Esquema estrella:</b> hechos conectados directamente a dimensiones; simple y rápido.</li>
+<li><b>Copo de nieve:</b> dimensiones normalizadas en subtablas; ahorra espacio pero consultas más complejas.</li></ul>
+<h4>Cubo OLAP y operaciones</h4>
+<ul><li><b>Roll-up:</b> sube en la jerarquía (Día→Mes→Año). <b>Drill-down:</b> baja (País→Ciudad→Tienda).</li>
+<li><b>Slice:</b> fija UN valor de una dimensión (año = 2025) → corte 2D. <b>Dice:</b> rango en 2+ dimensiones → subcubo.</li>
+<li><b>Pivot/Rotate:</b> gira los ejes (filas↔columnas).</li></ul>
+<h4>Tipos de OLAP</h4>
+<ul><li><b>ROLAP:</b> BD relacionales; grandes volúmenes, consultas más lentas.</li><li><b>MOLAP:</b> cubos dedicados, precalculados → ultra rápido.</li><li><b>HOLAP:</b> híbrido (resúmenes en cubo, detalle en relacional).</li></ul>
+${A('Slice vs Dice y Roll-up vs Drill-down',`<b>Slice</b> = 1 valor, 1 dimensión (rebanada). <b>Dice</b> = rango/varios valores en 2+ dimensiones (dado/subcubo).<br><b>Roll-up</b> = resumir (menos detalle). <b>Drill-down</b> = desglosar (más detalle).<br>Truco: <i>Roll-up "enrolla" hacia arriba; Drill "perfora" hacia abajo.</i>`)}
+${A('Hechos vs Dimensiones',`Hechos = números ("cuánto"). Dimensiones = contexto ("quién, cuándo, dónde"). Truco: la caja registradora es OLTP; el reporte del director es OLAP.`)}`,
+fc:[['4 propiedades del DW (Inmon)','Orientado a temas · Integrado · Variante en el tiempo · No volátil'],['No volátil','Solo lectura y carga; no se modifica lo ya cargado'],['Variante en el tiempo','Guarda historial de años → tendencias'],['Integrado','Armoniza fuentes (M/F vs 1/0 → estándar)'],['OLTP','Caja registradora: operación diaria, insertar/actualizar'],['OLAP','Reporte del director: análisis estratégico, consultas sobre históricos'],['Tabla de hechos','Centro del esquema; métricas numéricas'],['Tabla de dimensión','Contexto: quién, cuándo, dónde'],['Esquema estrella vs copo de nieve','Estrella: dimensiones directas (rápido). Copo: dimensiones normalizadas (ahorra espacio, más joins)'],['Roll-up','Subir jerarquía: Día→Mes→Año'],['Drill-down','Bajar a detalle: País→Ciudad→Tienda'],['Slice','Un solo valor de una dimensión (año=2025)'],['Dice','Rango en 2+ dimensiones → subcubo'],['Pivot','Rotar ejes (filas↔columnas)'],['ROLAP / MOLAP / HOLAP','Relacional (lento, grande) / Cubo precalculado (rápido) / Híbrido']]},
+
+{id:'crisp',n:'CRISP-DM',ic:'🔄',th:`
+<p><b>CRoss-Industry Standard Process for Data Mining.</b> Nació (1996-2000) de un consorcio financiado por la Comisión Europea (proyecto ESPRIT: NCR, Daimler-Benz/Chrysler, SPSS, OHRA). Es neutral a industria y herramienta. En los 90 la minería de datos era más "arte" que disciplina.</p>
+<p><b>SÍ ES:</b> modelo de proceso estructurado. <b>NO ES:</b> algoritmo, lenguaje, librería ni garantía de éxito.</p>
+<h4>6 fases (ciclo, no cascada)</h4>
+<table><tr><th>#</th><th>Fase</th><th>Clave de examen</th></tr>
+<tr><td>1</td><td>Business Understanding</td><td>Primero "¿qué decisión apoyo?", nunca "¿qué algoritmo uso?". Objetivos, restricciones, criterios de éxito.</td></tr>
+<tr><td>2</td><td>Data Understanding</td><td>Recolectar, explorar, calidad: faltantes, errores, atípicos.</td></tr>
+<tr><td>3</td><td>Data Preparation</td><td>Limpiar/transformar. "Garbage in, garbage out". La que más tiempo consume.</td></tr>
+<tr><td>4</td><td>Modeling</td><td>Aquí aparece el algoritmo y se ajustan parámetros.</td></tr>
+<tr><td>5</td><td>Evaluation</td><td>¿Resuelve la necesidad del NEGOCIO? Evaluar modelo ≠ evaluar proyecto. Puede regresar a fases previas.</td></tr>
+<tr><td>6</td><td>Deployment</td><td>Reportes o integración en software. Sin uso, sin impacto.</td></tr></table>
+<h4>Trampa del 99.5% de Accuracy</h4>
+<p>10,000 transacciones: 9,950 legítimas, 50 fraudes. Un modelo que dice "todo legítimo" tiene accuracy 99.5% pero Recall de fraude = 0%. Usar Precision, Recall, F1, PR-AUC.</p>
+<h4>Caso DaimlerChrysler (1999)</h4>
+<p>+7 millones de reclamaciones de garantía (~40 GB). Demostró que CRISP-DM <b>hace visibles las dificultades</b>: datos difíciles sin expertos (fase 2), preparación tomó mucho más (fase 3), patrones no útiles para ingenieros (fase 5).</p>
+<h4>Limitaciones</h4><p>Sigue siendo estándar de facto, pero no cubre MLOps, monitoreo en producción, concept drift, gobernanza de IA ni privacidad.</p>
+${A('Evaluar modelo vs evaluar proyecto',`Evaluar el <b>modelo</b> = métricas matemáticas (precision, recall). Evaluar el <b>proyecto</b> = ¿la decisión de negocio mejora? Un modelo con métricas altas puede ser inútil (ej. 99.5% accuracy sin detectar fraudes).`)}
+${A('¿Por qué ciclo y no cascada?',`Porque la Evaluación (fase 5) puede mandarte de vuelta a cualquier fase anterior, incluso a redefinir el problema de negocio. Las flechas son bidireccionales.`)}`,
+fc:[['CRISP-DM','CRoss-Industry Standard Process for Data Mining'],['Origen CRISP-DM','1996-2000, consorcio con fondos de la Comisión Europea (ESPRIT)'],['¿Es un algoritmo?','NO: es un modelo de proceso, neutral a industria y herramienta'],['6 fases','Negocio → Datos → Preparación → Modelado → Evaluación → Despliegue'],['Fase 1','Entender qué decisión apoyar (no el algoritmo)'],['Fase 3','Preparación: Garbage in, garbage out; la que más tiempo consume'],['Fase 4','Modeling: aquí se elige el algoritmo'],['Fase 5','Evaluación: ¿sirve al negocio? Puede regresar a fases previas'],['Fase 6','Despliegue: reporte o integración; sin uso no hay impacto'],['Trampa 99.5%','Accuracy alta con 0% Recall de fraude por desbalance'],['DaimlerChrysler','7M reclamos de garantía; hizo visibles las dificultades'],['Limitaciones actuales','No contempla MLOps, concept drift, gobernanza ni privacidad']]},
+
+{id:'kdd',n:'KDD',ic:'⛏️',th:`
+<p><b>Knowledge Discovery in Databases.</b> Proceso iterativo, <b>no trivial</b> y de varias etapas para identificar patrones <b>válidos, novedosos, útiles y comprensibles</b>. Flujo: datos en bruto → información/patrones → conocimiento para decidir.</p>
+<table><tr><th>KDD</th><th>Data Mining</th></tr><tr><td>Proceso COMPLETO de 5 etapas (construir la casa entera)</td><td>Solo UNA etapa (la 4ª) donde se aplican algoritmos (levantar estructura)</td></tr></table>
+<h4>5 etapas</h4>
+<ol><li><b>Selección:</b> fuentes y variables relevantes. (SQL, NiFi, Talend)</li>
+<li><b>Preprocesamiento:</b> limpieza: errores, duplicados, faltantes, formatos. (Pandas, NumPy, OpenRefine)</li>
+<li><b>Transformación:</b> normalizar, reducir dimensiones (PCA), variables derivadas. (Scikit-learn, Spark)</li>
+<li><b>Minería de datos:</b> clasificación (árboles, Bayes), clustering (K-Means), reglas de asociación (Apriori), series temporales. (Weka, RapidMiner, TensorFlow, PyTorch)</li>
+<li><b>Interpretación y Evaluación:</b> validar patrones; métricas (Precisión, Recall, F1, AUC) + visualización. (Power BI, Tableau, Jupyter)</li></ol>
+<h4>Trade-off legibilidad vs poder predictivo</h4>
+<p>Árboles/reglas: alta legibilidad, menor poder predictivo. Redes neuronales: altísimo poder predictivo, "caja negra".</p>
+<h4>Ventajas / Limitaciones / Ejemplo</h4>
+<p>Ventajas: volúmenes masivos, patrones ocultos, decisiones basadas en evidencia. Limitaciones: dependencia de calidad de datos, consumo de tiempo (pre-proceso y transformación), patrones falsos por azar. Ejemplo: canasta de compra (pañales + cerveza los viernes).</p>
+${A('¿Por qué "no trivial"?',`Porque los patrones no se obtienen con un cálculo directo (como un promedio): requieren algoritmos de búsqueda e inferencia.`)}
+${A('Preprocesamiento vs Transformación',`Preprocesamiento = <b>limpiar</b> (corregir/eliminar). Transformación = <b>adaptar</b> (escalas, PCA, variables nuevas). Truco: primero lavas, luego cortas.`)}`,
+fc:[['KDD','Knowledge Discovery in Databases: proceso completo de datos a conocimiento'],['Patrones en KDD deben ser…','Válidos, novedosos, útiles y comprensibles'],['KDD vs Data Mining','KDD = proceso de 5 etapas; Data Mining = solo la etapa 4'],['5 etapas KDD','Selección → Preprocesamiento → Transformación → Minería → Evaluación'],['Preprocesamiento','Limpieza: errores, duplicados, faltantes'],['Transformación','Normalizar, PCA, variables derivadas'],['Trade-off KDD','Árboles: legibles/menos precisos. Redes neuronales: precisas/caja negra'],['Ejemplo de aplicación','Canasta de compra: pañales + cerveza (reglas de asociación)'],['Limitación principal','Garbage in, garbage out; patrones falsos por azar']]},
+
+{id:'ml',n:'Equipo 11: Algoritmos ML',ic:'🤖',th:`
+<p>ML = el sistema <b>aprende patrones de los datos</b> (no usa reglas if/else escritas a mano) y mejora con la experiencia.</p>
+<table><tr><th>Tarea</th><th>Pregunta</th><th>Etiquetas</th><th>Ejemplo</th></tr>
+<tr><td>Regresión</td><td>¿Qué valor numérico?</td><td>Sí</td><td>Precio de casa</td></tr>
+<tr><td>Clasificación</td><td>¿Qué categoría?</td><td>Sí</td><td>Spam / No spam</td></tr>
+<tr><td>Clustering</td><td>¿Qué grupos existen?</td><td>No</td><td>Segmentar clientes</td></tr></table>
+<ul><li><b>Regresión lineal:</b> ŷ = β₀ + β₁x; mínimos cuadrados (minimiza distancia puntos-recta).</li>
+<li><b>Regresión logística:</b> CLASIFICACIÓN; función sigmoide → probabilidad 0–1; umbral (ej. 0.5).</li>
+<li><b>Árbol de decisión:</b> preguntas sucesivas; fácil de interpretar; riesgo de sobreajuste.</li>
+<li><b>Random Forest:</b> ensamble de muchos árboles, votación mayoritaria; reduce sobreajuste.</li>
+<li><b>KNN:</b> clasifica por los K vecinos más cercanos (distancia); hay que escalar variables.</li>
+<li><b>Naive Bayes:</b> probabilístico (Bayes), asume independencia entre variables; rápido en texto/categóricos.</li>
+<li><b>K-Means:</b> no supervisado; K centroides, asigna al más cercano y recalcula hasta estabilizar.</li></ul>
+${A('Regresión logística: ¿regresión o clasificación?',`Aunque se llama "regresión", <b>clasifica</b>: la sigmoide convierte el número en probabilidad y el umbral decide la clase.`)}
+${A('K en KNN vs K en K-Means',`KNN: K = número de <b>vecinos</b> que votan (supervisado). K-Means: K = número de <b>grupos/centroides</b> (no supervisado).`)}`,
+fc:[['Regresión','Predice un valor numérico continuo'],['Clasificación','Predice categoría discreta'],['Clustering','Encuentra grupos en datos sin etiquetas'],['Regresión lineal','ŷ = β₀ + β₁x; mínimos cuadrados'],['Regresión logística','Clasificación con sigmoide (0–1) y umbral'],['Árbol de decisión','Fácil de interpretar; riesgo de sobreajuste'],['Random Forest','Ensamble de árboles con voto mayoritario; reduce overfitting'],['KNN','K vecinos más cercanos; escalar variables'],['Naive Bayes','Bayes + independencia de variables; rápido con texto'],['K-Means','K centroides; asigna y recalcula iterativamente (sin etiquetas)']]},
+
+{id:'e10',n:'Equipo 10: Métricas de Evaluación',ic:'📏',th:`
+<h4>Matriz de confusión</h4>
+<p><b>VP/TP</b>: dijo Sí y era Sí · <b>VN/TN</b>: dijo No y era No · <b>FP</b>: dijo Sí pero era No (falsa alarma) · <b>FN</b>: dijo No pero era Sí (se le pasó).</p>
+<h4>Clasificación</h4>
+<ul><li><b>Accuracy</b> = (TP+TN)/Total. Engañosa con clases desbalanceadas.</li>
+<li><b>Precision</b> = TP/(TP+FP). Úsala cuando los <b>FP</b> son costosos (correo normal marcado como spam).</li>
+<li><b>Recall/Sensibilidad</b> = TP/(TP+FN). Úsala cuando un <b>FN</b> es peligroso (enfermedad, fraude).</li>
+<li><b>F1</b> = 2·P·R/(P+R): media armónica; ideal con datos desbalanceados.</li></ul>
+<h4>Regresión</h4>
+<ul><li><b>MAE:</b> promedio de |error|; misma unidad; fácil de interpretar.</li>
+<li><b>MSE:</b> promedio de error²; castiga errores grandes; unidades al cuadrado.</li>
+<li><b>RMSE:</b> √MSE; castiga grandes y vuelve a la unidad original.</li>
+<li><b>R²:</b> % de variabilidad explicada (0–1); compara modelos sin importar unidades.</li></ul>
+<h4>Clustering</h4>
+<ul><li><b>Internas (Silueta):</b> sin etiquetas; cohesión (qué tan juntos dentro) y separación (qué tan lejos del grupo más cercano).</li>
+<li><b>Externas (ARI):</b> con etiquetas reales; 1 = coincide perfecto, 0 = azar.</li></ul>
+<h4>Ejemplo numérico extra</h4>
+<p>TP=40, FP=10, FN=20, TN=30 (N=100): Accuracy=0.70; Precision=40/50=0.80; Recall=40/60=0.667; F1=0.727.<br>Regresión: reales 10,20,30; predichos 12,18,33 → errores 2,−2,3 → MAE=7/3=2.33; MSE=17/3=5.67; RMSE≈2.38.</p>
+${A('FP vs FN en medicina (cómo no confundirte)',`Divide el nombre: la <b>2ª palabra</b> = lo que predijo el modelo (Positivo/Negativo); la <b>1ª</b> = si acertó (Verdadero/Falso).<br><b>FP</b>: predijo enfermo, estaba sano → falsa alarma (estudios extra, estrés).<br><b>FN</b>: predijo sano, estaba enfermo → falsa calma, el peligroso → se busca <b>Recall alto</b>.<br>Truco: <i>Precision penaliza FP (P de "Pánico falso"); Recall penaliza FN (R de "Rescatar a todos los enfermos")</i>.`)}
+${A('MAE vs MSE vs RMSE',`Los tres miden magnitud del error. MAE trata todos los errores igual. MSE/RMSE elevan al cuadrado: un error de 10 pesa 100 vs 1 de peso 1. RMSE = √MSE para volver a las unidades. RMSE ≥ MAE siempre.`)}`,
+fc:[['VP / TP','Dijo Sí y era Sí'],['VN / TN','Dijo No y era No'],['FP','Dijo Sí, era No: falsa alarma'],['FN','Dijo No, era Sí: se le pasó (peligroso)'],['Accuracy','(TP+TN)/Total; engaña con desbalance'],['Precision','TP/(TP+FP); importa si FP es costoso'],['Recall','TP/(TP+FN); importa si FN es peligroso'],['F1','2PR/(P+R): media armónica'],['MAE','Promedio de |error|; misma unidad'],['MSE','Promedio de error²; castiga errores grandes; unidades²'],['RMSE','√MSE; castiga grandes y vuelve a la unidad'],['R²','% de variabilidad explicada; compara modelos'],['Coeficiente de Silueta','Métrica interna: cohesión y separación de clusters'],['ARI','Métrica externa con etiquetas reales; 1 = perfecto, 0 = azar']]},
+
+{id:'e9',n:'Equipo 9: Dashboards y Visualización',ic:'📊',th:`
+<p>Un <b>Dashboard</b> es la interfaz visual de un <b>Sistema de Soporte a la Decisión (SSD)</b>.</p>
+<ul><li><b>Dato:</b> unidad básica sin procesar. <b>Visualización:</b> representación gráfica (barras, pastel, líneas, mapa de calor). <b>Dashboard:</b> pantalla interactiva completa con varias visualizaciones, KPIs y filtros.</li>
+<li><b>SSD =</b> Datos (fuentes limpias) + Modelos (reglas, estadística, ML/IA) + Dashboard. <b>La decisión final la toma el humano.</b></li></ul>
+<h4>4 pasos para un buen dashboard</h4>
+<ol><li>Definir el objetivo · 2. Conocer al usuario (directivo = resumen; analista = detalle) · 3. Organizar prioridades (lo crítico en zonas de vista rápida) · 4. Jerarquía visual (colores, tamaños, orden).</li></ol>
+<h4>Componentes</h4>
+<p><b>KPI</b> (Key Performance Indicator) · gráficos y mapas · <b>filtros</b> (fecha, región, categoría) · <b>drill-down</b> (clic para detalle) · <b>alertas</b> (valor supera límite o meta).</p>
+<h4>IA en dashboards</h4>
+<p>Tradicional: BD → análisis básico → dashboard → decisión. Con IA: modelos detectan patrones, generan predicciones y recomendaciones, y explican en lenguaje natural. <b>Riesgos:</b> confianza ciega, sesgos, perder el criterio humano.</p>
+${A('Visualización vs Dashboard',`Una gráfica aislada = visualización. Un tablero que combina varias gráficas + KPIs + filtros + alertas = dashboard (como el HUD de un videojuego).`)}`,
+fc:[['Dashboard','Interfaz visual de un SSD; pantalla interactiva con KPIs, gráficos y filtros'],['SSD (3 componentes)','Datos + Modelos + Dashboard'],['KPI','Key Performance Indicator'],['Visualización vs Dashboard','Gráfico individual vs pantalla completa que junta varios'],['4 pasos de diseño','Objetivo → Usuario → Prioridades → Jerarquía visual'],['Drill-down','Clic en dato general para ver detalle'],['Alertas','Aviso cuando un valor pasa un límite o meta'],['IA en dashboards','Detecta patrones, predice, recomienda y explica en lenguaje natural'],['Riesgo de IA en dashboards','Dependencia ciega, sesgo, perder criterio humano']]},
+
+{id:'e8',n:'Equipo 8: Ética, Privacidad y Gobernanza',ic:'⚖️',th:`
+<h4>Ética</h4>
+<ul><li><b>Sesgo algorítmico:</b> el modelo aprende prejuicios de datos históricos y los perpetúa/amplifica.</li>
+<li><b>Equidad (Fairness):</b> trato imparcial a grupos (raza, género, edad, nivel socioeconómico).</li>
+<li><b>Explicabilidad (XAI):</b> entender y justificar por qué el modelo decidió (abrir "cajas negras").</li>
+<li><b>Responsabilidad (Accountability):</b> quién responde legal y moralmente de las fallas.</li></ul>
+<h4>Privacidad</h4>
+<ul><li><b>Consentimiento informado:</b> saber qué, para qué, autorizar y poder revocar.</li>
+<li><b>Anonimización:</b> IRREVERSIBLE; elimina identificadores directos e indirectos.</li>
+<li><b>Seudonimización:</b> reemplaza por códigos; reversible con información adicional guardada aparte.</li>
+<li><b>Privacidad diferencial:</b> añade ruido controlado para estadísticas globales sin revelar individuos.</li>
+<li><b>GDPR (UE):</b> derecho al olvido y portabilidad. <b>LFPDPPP (México):</b> derechos <b>ARCO</b>: Acceso, Rectificación, Cancelación, Oposición.</li></ul>
+<h4>Gobernanza</h4>
+<ul><li><b>Calidad:</b> preciso, completo, consistente, actualizado.</li><li><b>Linaje (Data Lineage):</b> trayectoria del dato desde el origen con cada transformación hasta su uso; permite auditar dónde se corrompió.</li>
+<li><b>RBAC:</b> permisos según rol.</li><li><b>Ciclo de vida:</b> creación, almacenamiento, uso, archivo, destrucción segura.</li></ul>
+<table><tr><th>Pilar</th><th>Pregunta</th><th>Ejemplo</th></tr><tr><td>Ética</td><td>¿Es correcto?</td><td>Corregir sesgo por código postal</td></tr><tr><td>Privacidad</td><td>¿Protegemos la identidad?</td><td>Anonimizar historiales médicos</td></tr><tr><td>Gobernanza</td><td>¿Quién administra y asegura calidad?</td><td>Definir acceso y auditar calidad</td></tr></table>
+${A('Anonimización vs Seudonimización',`Anonimizar = no hay vuelta atrás. Seudonimizar = hay una "llave" guardada aparte para revertir. Por eso los datos seudonimizados <b>siguen siendo datos personales</b> bajo el GDPR.`)}
+${A('Privacidad vs Gobernanza',`Privacidad = derechos del titular y evitar divulgación. Gobernanza = control interno: calidad, linaje, roles de acceso.`)}`,
+fc:[['Sesgo algorítmico','Error sistemático por prejuicios en datos de entrenamiento'],['Fairness','Trato imparcial entre grupos demográficos'],['XAI','Explicabilidad: justificar la decisión del modelo'],['Accountability','Quién responde legal y moralmente de fallas'],['Anonimización','Irreversible; sin reidentificación'],['Seudonimización','Códigos/claves; reversible con llave separada'],['Privacidad diferencial','Ruido controlado para estadísticas sin exponer individuos'],['GDPR','UE: derecho al olvido y portabilidad'],['LFPDPPP / ARCO','México: Acceso, Rectificación, Cancelación, Oposición'],['Linaje del dato','Rastrea origen y transformaciones; sirve para auditar'],['RBAC','Control de acceso basado en roles'],['3 pilares','Ética (¿correcto?) · Privacidad (¿protegido?) · Gobernanza (¿quién controla?)']]},
+
+{id:'p0',n:'Profe 0: Razonamiento Aproximado',ic:'🌫️',th:`
+<h4>Certeza, riesgo, incertidumbre</h4>
+<ul><li><b>Certeza:</b> la acción lleva necesariamente a un resultado conocido (costos de 1,000 zapatos).</li>
+<li><b>Riesgo:</b> se conocen opciones y probabilidades (llueve 40%, baja 25% la afluencia).</li>
+<li><b>Incertidumbre:</b> no se conoce la probabilidad (¿subirá el dólar frente al euro?).</li></ul>
+<h4>Fuentes de incertidumbre (3 grupos)</h4>
+<p>Deficiencias de la información · Características del mundo real · Deficiencias del modelo. En medicina (Osler: "ciencia de la incertidumbre y arte de la probabilidad"): información incompleta, errónea, imprecisa; mundo real no determinista; modelo incompleto; modelo inexacto.</p>
+<h4>Métodos</h4>
+<ul><li><b>Cualitativos:</b> lógicas no monótonas (suposiciones que se corrigen): razonamiento por defecto (Reiter), TMS (Doyle), teoría de justificaciones (Cohen y Grinberg). Desventaja: no manejan grados de certeza.</li>
+<li><b>Numéricos (razonamiento aproximado):</b> usan valores numéricos de creencia/probabilidad.</li></ul>
+<h4>Historia</h4>
+<p>S.XVIII Bayes y Laplace: probabilidad como creencia personal · Inicios S.XX Fisher: frecuencia a largo plazo · Años 30 Savage y de Finetti: creencia personal · IA inicial: Naive Bayes.</p>
+<h4>Naive Bayes</h4>
+<p>P(A|B) = P(B|A)·P(A) / P(B). Ejemplo seguros: p(sí|E)=0.0210, p(no|E)=0.0296 → se elige <b>no</b> (mayor). Inconvenientes: difícil obtener todas las probabilidades condicionales (estimaciones subjetivas) e independencia condicional poco verosímil.</p>
+<h4>MYCIN, Redes Bayesianas, Lógica Difusa</h4>
+<ul><li><b>MYCIN:</b> uno de los primeros sistemas expertos médicos (infecciones bacterianas, dosis de antibióticos según peso); usaba <b>factores de certeza</b>, criticado por falta de rigor probabilístico.</li>
+<li><b>Redes Bayesianas:</b> inicios de los 80; modelo probabilista causal; nodo = variable, enlace = mecanismo causal.</li>
+<li><b>Lógica difusa (Zadeh):</b> motiva la <b>vaguedad</b> (no la incertidumbre); pertenencia continua en [0,1]. Aplicaciones en Japón: control industrial, trenes, electrodomésticos, cámaras.</li></ul>
+${A('Riesgo vs Incertidumbre',`Riesgo = conozco probabilidades. Incertidumbre = NO las conozco. Truco: <i>riesgo se puede calcular, incertidumbre se tiene que estimar.</i>`)}
+${A('Vaguedad vs Incertidumbre (difusa)',`Incertidumbre: no sé si un hecho es cierto. Vaguedad: el concepto mismo es borroso ("pobre"). 500,000 pesetas ahorradas → pertenencia a "pobre" ≈ 0.4–0.5; 2 pesetas → 1; 1,500 millones → 0.`)}`,
+fc:[['Certeza','Resultado conocido necesariamente'],['Riesgo','Se conocen opciones y probabilidades'],['Incertidumbre','No se conoce la probabilidad de ocurrencia'],['3 fuentes de incertidumbre','Información, mundo real, modelo'],['Métodos cualitativos','Lógicas no monótonas: Reiter, Doyle (TMS), Cohen y Grinberg'],['Métodos numéricos','Grados de creencia/probabilidad = razonamiento aproximado'],['Bayes y Laplace','S.XVIII: probabilidad como creencia personal'],['Fisher','Probabilidad como frecuencia a largo plazo'],['Inconvenientes de Naive Bayes','Probabilidades difíciles de obtener + independencia poco verosímil'],['MYCIN','Sistema experto médico con factores de certeza'],['Redes Bayesianas','Modelo causal: nodo=variable, enlace=causa; años 80'],['Lógica difusa','Zadeh; vaguedad; pertenencia en [0,1]']]},
+
+{id:'p3',n:'Profe 3: Función de Densidad',ic:'🔔',th:`
+<ul><li><b>Media</b> x̄ = (1/N)·Σxᵢ · <b>Moda:</b> dato más frecuente.</li>
+<li><b>Mediana:</b> N impar → posición (N+1)/2; N par → promedio de los dos centrales ½(x<sub>N/2</sub>+x<sub>N/2+1</sub>) (datos ordenados).</li>
+<li><b>Desviación respecto a la media</b> Dᵢ = |xᵢ − x̄| · <b>Desviación media</b> Dm = (1/N)Σ|xᵢ − x̄|.</li>
+<li><b>Varianza</b> σ² = (1/N)Σ(xᵢ − x̄)² · <b>Desv. estándar</b> σ = √σ².</li></ul>
+<h4>Ejemplo: alturas de perros (mm) 600, 470, 170, 430, 300 (N=5)</h4>
+<p>x̄ = 1970/5 = 394 · diferencias: 206, 76, −224, 36, −94 · σ² = 108,520/5 = 21,704 · σ = √21,704 ≈ 147 · rango normal x̄ ± σ = <b>247 a 541 mm</b>.</p>
+<h4>Campana de Gauss</h4>
+<p>μ±1σ → 68.26% · μ±2σ → 95.44% · μ±3σ → 99.72%.</p>
+<h4>Función de densidad (FDP)</h4>
+<p>P(a ≤ X ≤ b) = ∫ₐᵇ p(x)dx = <b>área bajo la curva</b>. Con 100→1,000→10,000→100,000 observaciones el histograma se vuelve curva continua que representa a toda la población.<br>Normal: y = 1/(σ√(2π)) · e<sup>−(x−μ)²/(2σ²)</sup>; π≈3.14159, e≈2.71828.</p>
+<h4>Excel</h4>
+<p>AVERAGE/PROMEDIO · STDEV.S/DESVEST.M (muestra) · STDEV.P/DESVEST.P (población) · NORM.DIST(x, media, desv, acumulado)/DISTR.NORM.N.</p>
+<h4>Ejemplo extra</h4><p>Datos 2,4,4,4,5,5,7,9 (N=8): media 5; moda 4; mediana (4+5)/2=4.5; Dm=12/8=1.5; σ²=32/8=4; σ=2; rango normal 3 a 7.</p>
+${A('Área bajo la curva (integral)',`En una variable continua la probabilidad de un valor exacto es 0; solo tiene sentido P en un intervalo = área bajo p(x). <b>p(x) NO es una probabilidad</b> (puede ser >1); el área total = 1. Con "acumulado = VERDADERO" NORM.DIST da el área acumulada; con FALSO da la altura de la curva.`)}
+${A('σ² vs σ y muestra vs población',`σ² está en unidades al cuadrado (mm²); σ regresa a mm. Esta guía divide entre <b>N</b> (población). Para muestra se divide entre N−1 (STDEV.S) — es el típico distractor.`)}`,
+fc:[['Varianza σ²','Media de las diferencias a la media al cuadrado: (1/N)Σ(x−x̄)²'],['Desviación estándar σ','√σ²; qué tanto se alejan los datos'],['Mediana N impar','Posición (N+1)/2'],['Mediana N par','Promedio de los dos datos centrales'],['Moda','Dato más repetido'],['Desviación media','(1/N)Σ|x−x̄|'],['Regla 68-95-99.7','μ±1σ=68.26% · ±2σ=95.44% · ±3σ=99.72%'],['P(a≤X≤b)','Área bajo la curva de densidad entre a y b'],['Rango normal','x̄ ± σ'],['STDEV.S vs STDEV.P','Muestra (N−1) vs población (N)'],['NORM.DIST','Densidad (acumulado FALSO) o área acumulada (VERDADERO)'],['Perros: x̄, σ','394 mm; σ≈147 → normal 247–541 mm']]},
+
+{id:'p6',n:'Profe 6: Naive Bayes + Laplace (Lepistos)',ic:'🪲',th:`
+<p>10 ejemplos (COLOR, ALAS, TAMAÑO, VELOCIDAD → LEPISTO +/−):</p>
+<table><tr><th></th><th>Color</th><th>Alas</th><th>Tam.</th><th>Vel.</th><th>Clase</th></tr>
+<tr><td>E1</td><td>negro</td><td>sí</td><td>pequeño</td><td>alta</td><td>+</td></tr><tr><td>E2</td><td>amarillo</td><td>no</td><td>grande</td><td>media</td><td>−</td></tr><tr><td>E3</td><td>amarillo</td><td>no</td><td>grande</td><td>baja</td><td>−</td></tr><tr><td>E4</td><td>blanco</td><td>sí</td><td>medio</td><td>alta</td><td>+</td></tr><tr><td>E5</td><td>negro</td><td>no</td><td>medio</td><td>alta</td><td>−</td></tr><tr><td>E6</td><td>rojo</td><td>sí</td><td>pequeño</td><td>alta</td><td>+</td></tr><tr><td>E7</td><td>rojo</td><td>sí</td><td>pequeño</td><td>baja</td><td>−</td></tr><tr><td>E8</td><td>negro</td><td>no</td><td>medio</td><td>media</td><td>−</td></tr><tr><td>E9</td><td>negro</td><td>sí</td><td>pequeño</td><td>media</td><td>−</td></tr><tr><td>E10</td><td>amarillo</td><td>sí</td><td>grande</td><td>media</td><td>−</td></tr></table>
+<p>A priori: P(+)=3/10, P(−)=7/10. Condicionales: P(blanco|+)=1/3; P(alta|+)=3/3; P(no alas|−)=4/7; P(grande|−)=3/7.</p>
+<h4>Clasificar: amarillo, sin alas, pequeño, alta — SIN Laplace</h4>
+<p>(+): 3/10·0/3·0/3·2/3·3/3 = <b>0</b> · (−): 7/10·3/7·4/7·2/7·1/7 = <b>0.007</b> → clase <b>−</b>.</p>
+<h4>Laplace: P(A=v|C=c) = (n(A=v,C=c) + k) / (n(C=c) + k·|A|)</h4>
+<p>k=1 usualmente; |A| = número de valores distintos del atributo: COLOR 4 · ALAS 2 · TAMAÑO 3 · VELOCIDAD 3.</p>
+<p>(+) n=3: amarillo 1/7; no 1/5; pequeño 3/6; alta 4/6 → 0.3·(1/7)(1/5)(3/6)(4/6) = <b>0.002857</b><br>(−) n=7: amarillo 4/11; no 5/9; pequeño 3/10; alta 2/10 → 0.7·(4/11)(5/9)(3/10)(2/10) = <b>0.008485</b> → clase <b>−</b>.</p>
+<h4>Más ejemplos para elegir la mejor probabilidad</h4>
+<ul><li>negro, sí, pequeño, alta: sin Laplace (+)=0.0667 vs (−)=0.0052 → <b>+</b>; con Laplace (+)=0.0229 vs (−)=0.0068 → <b>+</b>.</li>
+<li>rojo, sí, <b>grande</b>, alta: sin Laplace (+)=0 (grande|+=0/3), (−)=0.00262 → <b>−</b>; con Laplace (+)=0.00762 vs (−)=0.00453 → <b>+</b>. ¡Laplace cambió la decisión!</li>
+<li>blanco, no, medio, baja: sin Laplace ambas 0 (empate inútil); con Laplace (+)=0.00095 vs (−)=0.00318 → <b>−</b>.</li></ul>
+<p><b>Procedimiento:</b> 1) prior por clase 2) para cada atributo contar casos de la clase con ese valor 3) multiplicar 4) comparar y elegir el MAYOR (el denominador P(B) es común y no cambia la decisión).</p>
+${A('Qué es k y |A| en Laplace',`<b>k</b> = ejemplos virtuales que se "agregan" por cada valor posible (normalmente 1). <b>|A|</b> = cardinalidad: cuántos valores distintos puede tomar ESE atributo (no cuántos aparecieron en la clase). El denominador suma k·|A| para que las probabilidades de todos los valores sigan sumando 1. Ojo: n(C=c) es el total de la clase (3 o 7), no 10. El prior P(C) NO se suaviza en esta guía.`)}
+${A('Por qué hay que suavizar',`Un solo 0 anula toda la multiplicación (la clase queda con probabilidad 0 aunque los otros atributos coincidan) → sobreajuste a los datos vistos.`)}`,
+fc:[['Teorema de Bayes','P(A|B) = P(B|A)·P(A) / P(B)'],['"Naive"','Asume independencia condicional de atributos'],['Prior Lepisto','P(+)=3/10, P(−)=7/10'],['Problema del cero','Un P=0 anula todo el producto → sobreajuste'],['Laplace','(n(A=v,C=c)+k)/(n(C=c)+k·|A|)'],['k','Ejemplos virtuales; usualmente k=1'],['|A|','Número de valores posibles del atributo (color 4, alas 2, tamaño 3, velocidad 3)'],['Lepisto amarillo/no/pequeño/alta sin Laplace','(+)=0, (−)=0.007 → clase −'],['Lepisto mismo caso con Laplace','(+)=0.002857, (−)=0.008485 → clase −'],['Regla de decisión','Elegir la clase con mayor probabilidad a posteriori (producto mayor)']]},
+
+{id:'p7',n:'Profe 7: Matriz de Confusión (COVID)',ic:'🦠',th:`
+<h4>Cómo identificar cada celda (truco)</h4>
+<p>Dos palabras: la <b>2ª</b> = lo que PREDIJO el modelo (Positivo = C, Negativo = nc); la <b>1ª</b> = si ACERTÓ (Verdadero) o FALLÓ (Falso).</p>
+<table><tr><th>Predicción / Real</th><th>Real C</th><th>Real nc</th></tr><tr><td>Predicción C</td><td>TP</td><td>FP</td></tr><tr><td>Predicción nc</td><td>FN</td><td>TN</td></tr></table>
+<ul><li><b>TP:</b> Pred C, Real C — "atinó al decir Sí".</li><li><b>FP:</b> Pred C, Real nc — "falsa alarma".</li><li><b>FN:</b> Pred nc, Real C — "falsa calma/peligro".</li><li><b>TN:</b> Pred nc, Real nc — "atinó al decir No".</li></ul>
+<h4>12 pacientes (Pred/Real)</h4>
+<p>1 C/C TP · 2 C/nc FP · 3 nc/nc TN · 4 C/C TP · 5 C/C TP · 6 nc/nc TN · 7 nc/nc TN · 8 C/nc FP · 9 C/C TP · 10 C/C TP · 11 nc/nc TN · 12 nc/C FN</p>
+<p><b>TP=5, FP=2, FN=1, TN=4, N=12.</b></p>
+<ul><li>Accuracy = (5+4)/12 = <b>0.75</b></li><li>Precision = 5/(5+2) = 5/7 ≈ <b>0.71</b></li><li>Recall = 5/(5+1) = 5/6 ≈ <b>0.83</b></li><li>F1 = 2·(0.71·0.83)/(0.71+0.83) ≈ <b>0.77</b></li></ul>
+<h4>Otros cálculos útiles</h4><p>Total de positivos reales = TP+FN = 6. Total predichos positivos = TP+FP = 7. Total predichos negativos = FN+TN = 5. Especificidad (extra) = TN/(TN+FP) = 4/6 ≈ 0.67.</p>
+${A('Orientación de la matriz',`En esta guía las <b>filas = predicción</b> y las <b>columnas = real</b>. Librerías como scikit-learn lo ponen al revés (filas = real). Siempre lee los encabezados antes de ubicar FP y FN: están en la diagonal secundaria.`)}
+${A('Qué métrica usar en COVID',`Un FN manda a casa a un enfermo contagioso: lo crítico → <b>Recall</b>. Un FP solo genera una prueba extra: se tolera más. Si el costo de FP fuera alto (cuarentena obligatoria injusta), importaría la <b>Precision</b>.`)}`,
+fc:[['Regla para nombrar celdas','2ª palabra = lo predicho; 1ª = acertó o falló'],['TP en COVID','Pred C, Real C'],['FP en COVID','Pred C, Real nc (falsa alarma)'],['FN en COVID','Pred nc, Real C (falsa calma, peligroso)'],['TN en COVID','Pred nc, Real nc'],['Matriz del ejemplo','TP=5, FP=2, FN=1, TN=4 (N=12)'],['Accuracy ejemplo','(5+4)/12 = 0.75'],['Precision ejemplo','5/7 ≈ 0.71'],['Recall ejemplo','5/6 ≈ 0.83'],['F1 ejemplo','≈ 0.77'],['Especificidad','TN/(TN+FP) = 4/6']]}
+];const Q=[];
+const q=(s,t,o,w)=>Q.push({s,t:'mc',q:t,o,w});
+const tf=(s,t,v,w)=>Q.push({s,t:'tf',q:t,v,w});
+// ===== DW =====
+q('dw','Un DW es "no volátil". ¿Qué significa exactamente?',['Los datos son de solo lectura y carga; una vez dentro no se modifican','Los datos se eliminan automáticamente al cerrar el día contable','Los datos se actualizan en tiempo real con cada transacción','Los datos residen únicamente en memoria RAM para mayor velocidad'],'No volátil = carga y consulta, sin modificar lo ya cargado. Las otras describen un OLTP (actualización constante) o confunden "volátil" con memoria RAM.');
+q('dw','¿Qué propiedad del DW permite detectar tendencias de varios años?',['Variante en el tiempo','No volátil','Orientado a temas','Integrado'],'Variante en el tiempo guarda historial. No volátil se refiere a que no se modifica; Integrado a unificar fuentes; Orientado a temas a organizar por áreas del negocio.');
+q('dw','En un sistema el género se guarda M/F y en otro 1/0; en el DW se estandariza. ¿Qué propiedad ilustra?',['Integrado','Orientado a temas','No volátil','Variante en el tiempo'],'Integrado = armonizar inconsistencias entre fuentes. Orientado a temas sería organizar por ventas/clientes; las demás no tratan formatos.');
+q('dw','Organizar la información por ventas, clientes e inventario (y no por procesos de software) es:',['Orientado a temas','Integrado','Variante en el tiempo','Normalización transaccional'],'Orientado a temas = áreas clave del negocio. Integrado trata de unificar fuentes; la normalización es técnica OLTP.');
+q('dw','¿Cuál es un ejemplo de consulta OLAP?',['Ventas totales por región en el último trimestre','Registrar la compra de un cliente en la caja','Actualizar la dirección de un cliente','Descontar una pieza del inventario al vender'],'OLAP = análisis agregado/histórico. Las demás son inserciones/actualizaciones transaccionales (OLTP).');
+q('dw','Registrar en tiempo real la compra de un cliente en caja corresponde a:',['OLTP','OLAP','MOLAP','Un cubo con operación Dice'],'OLTP = operación diaria. OLAP/MOLAP/Dice pertenecen al análisis.');
+q('dw','¿Qué contiene la tabla de hechos?',['Métricas numéricas (monto, cantidad, costo)','Atributos descriptivos como nombre y ciudad del cliente','Jerarquías de tiempo (día, mes, año)','Reglas de normalización del esquema'],'Hechos = números a medir. Atributos descriptivos y jerarquías viven en las dimensiones.');
+q('dw','Las tablas de dimensión sirven para:',['Dar contexto para filtrar o agrupar las métricas','Almacenar las métricas principales','Guardar solo transacciones diarias','Reemplazar la tabla de hechos en el esquema'],'Dimensiones = contexto (quién, cuándo, dónde). Las métricas son de la tabla de hechos.');
+q('dw','Diferencia entre estrella y copo de nieve:',['En copo de nieve las dimensiones se normalizan en subtablas; ahorra espacio pero complica consultas','En estrella las dimensiones se normalizan y las consultas son más lentas','El copo de nieve no usa tabla de hechos','La estrella ocupa menos espacio y es más compleja de consultar'],'Copo = dimensiones normalizadas (menos espacio, más joins). La estrella es simple y de alto rendimiento. Ambos usan tabla de hechos.');
+q('dw','Pasar de ver ventas por Día a verlas por Mes es:',['Roll-up','Drill-down','Slice','Pivot'],'Roll-up sube en la jerarquía (más abstracción). Drill-down baja; Slice filtra un valor; Pivot rota ejes.');
+q('dw','Pasar de ventas por País a ventas por Ciudad o Tienda es:',['Drill-down','Roll-up','Dice','Pivot'],'Drill-down aumenta el detalle. Roll-up es lo opuesto.');
+q('dw','Filtrar únicamente los datos del año 2025 (un valor de una dimensión) es:',['Slice','Dice','Roll-up','Drill-down'],'Slice = un valor de una dimensión → corte. Dice requiere rangos en 2+ dimensiones.');
+q('dw','Ventas de 2025 + zona Norte + categoría Electrónica es:',['Dice','Slice','Pivot','Roll-up'],'Dice = selección en varias dimensiones → subcubo. Slice usa solo una dimensión.');
+q('dw','Girar los ejes de la vista (filas por columnas) es:',['Pivot / Rotate','Slice','Dice','Drill-down'],'Pivot rota la vista; no cambia el nivel de detalle ni filtra.');
+q('dw','Tipo de OLAP ultra rápido porque los cálculos están precalculados en cubos dedicados:',['MOLAP','ROLAP','HOLAP','OLTP'],'MOLAP = cubos precalculados. ROLAP usa relacionales (más lento); HOLAP combina ambos.');
+q('dw','ROLAP se caracteriza por:',['Almacenar en BD relacionales; soporta grandes volúmenes pero consultas más lentas','Usar cubos precalculados','Guardar resúmenes en cubos y detalle en tablas','Ser exclusivo de sistemas transaccionales'],'ROLAP = relacional. Los cubos son MOLAP; la mezcla es HOLAP.');
+q('dw','HOLAP es:',['Híbrido: resúmenes en cubos y detalle en tablas relacionales','Solo cubos dedicados','Solo tablas relacionales','Un esquema de copo de nieve'],'HOLAP = ROLAP + MOLAP.');
+tf('dw','OLAP está diseñado para la operación diaria de insertar y actualizar registros.',false,'Falso: eso es OLTP. OLAP consulta grandes volúmenes agregados e históricos.');
+tf('dw','Un Data Warehouse mantiene historial de años, mientras una BD operativa normal guarda sobre todo el estado actual.',true,'Verdadero: variante en el tiempo.');
+tf('dw','Dice selecciona un solo valor de una dimensión para obtener un corte 2D.',false,'Falso: eso es Slice. Dice usa rangos en 2+ dimensiones.');
+tf('dw','En el esquema estrella la tabla de hechos se conecta directamente con sus dimensiones.',true,'Verdadero; en copo de nieve las dimensiones se subdividen.');
+tf('dw','Roll-up aumenta el nivel de detalle de los datos.',false,'Falso: Roll-up aumenta la abstracción (resume); el detalle lo da Drill-down.');
+// ===== CRISP =====
+q('crisp','CRISP-DM significa:',['CRoss-Industry Standard Process for Data Mining','Cross-Industry Statistical Pipeline for Data Models','Common Reference Standard for Information and Statistical Mining','Cyclic Relational Standard for Intelligent Data Management'],'Es Proceso Estándar Cruzado entre Industrias para la Minería de Datos. Las otras son nombres inventados con siglas parecidas.');
+q('crisp','CRISP-DM NO es:',['Un algoritmo de machine learning','Un modelo de proceso estructurado','Neutral a industria y herramienta','Un ciclo iterativo de 6 fases'],'Es un modelo de proceso, no un algoritmo, lenguaje o librería. Las demás son ciertas.');
+q('crisp','Origen de CRISP-DM:',['Consorcio financiado por la Comisión Europea (ESPRIT), 1996-2000','Departamento de Defensa de EE.UU. en 1985','Google y Microsoft en 2010','Una única universidad estadounidense en 2005'],'Surgió de un consorcio europeo (NCR, Daimler-Benz, SPSS, OHRA). Las otras fechas/actores son inventados.');
+q('crisp','Orden correcto de las fases:',['Negocio → Datos → Preparación → Modelado → Evaluación → Despliegue','Datos → Negocio → Modelado → Preparación → Evaluación → Despliegue','Negocio → Preparación → Datos → Modelado → Despliegue → Evaluación','Negocio → Datos → Modelado → Preparación → Evaluación → Despliegue'],'Primero se entiende el negocio y los datos, luego se preparan, se modela, se evalúa y se despliega. Las otras intercambian fases adyacentes (típico distractor).');
+q('crisp','La primera pregunta en un proyecto según CRISP-DM es:',['¿Qué decisión de negocio necesito apoyar?','¿Qué algoritmo es más preciso?','¿Cuántos datos tengo disponibles?','¿Qué librería de Python usaré?'],'La fase 1 define el problema/objetivos. El algoritmo aparece en la fase 4.');
+q('crisp','¿En qué fase se elige y entrena el algoritmo?',['Modeling (fase 4)','Business Understanding (fase 1)','Data Preparation (fase 3)','Evaluation (fase 5)'],'Modeling = algoritmos y ajuste de parámetros. Evaluation revisa si sirve al negocio.');
+q('crisp','"Garbage in, garbage out" se asocia con:',['Data Preparation','Deployment','Business Understanding','Modeling'],'Si los datos están sucios o mal transformados, ningún algoritmo salva el resultado; es la fase que más tiempo consume.');
+q('crisp','Detectar datos faltantes, errores y atípicos ANTES de entrenar corresponde a:',['Data Understanding','Evaluation','Deployment','Modeling'],'Data Understanding explora y verifica calidad. La limpieza ya aplicada es Data Preparation (distractor cercano).');
+q('crisp','Evaluar el proyecto difiere de evaluar el modelo porque:',['El proyecto se mide por si resuelve la necesidad de negocio, no solo por métricas matemáticas','El modelo se evalúa con costos y el proyecto con precisión','Son lo mismo en la fase 5','El proyecto se evalúa antes de entrenar'],'Un modelo con buenas métricas puede ser inútil para el negocio.');
+q('crisp','CRISP-DM es un ciclo y no una cascada porque:',['La Evaluación puede obligar a regresar a fases previas','Siempre termina en la fase 6 sin retorno','Cada fase se ejecuta una sola vez en orden','El despliegue elimina la necesidad de iterar'],'La iteración es clave; las flechas son bidireccionales.');
+q('crisp','Un modelo antifraude dice "todo legítimo" con 9,950 legítimas y 50 fraudes de 10,000. Su accuracy y recall de fraude son:',['99.5% y 0%','50% y 100%','99.5% y 99.5%','0.5% y 0%'],'Acierta 9,950/10,000=99.5% pero detecta 0 de 50 fraudes (Recall=0). Por eso accuracy engaña con desbalance.');
+q('crisp','Mejor métrica para el caso anterior:',['Recall, Precision, F1 o PR-AUC','Solo accuracy','Número de transacciones','Tiempo de entrenamiento'],'Con desbalance extremo se necesitan métricas que miren la clase minoritaria.');
+q('crisp','El caso DaimlerChrysler (1999) demostró que CRISP-DM:',['Hace visibles las dificultades del proyecto','Garantiza el éxito automático','Elimina la necesidad de expertos','Reduce a cero el tiempo de preparación de datos'],'Mostró dificultades: datos difíciles de entender, preparación larga, patrones no útiles. No garantiza éxito.');
+q('crisp','Brecha actual de CRISP-DM en IA moderna:',['No contempla MLOps, concept drift ni gobernanza/privacidad','No incluye fase de modelado','Solo sirve para bases relacionales','Obliga a usar redes neuronales'],'Se queda corto en monitoreo en producción, drift, gobernanza y privacidad.');
+q('crisp','Sin despliegue en la práctica, la solución:',['No genera impacto aunque sea precisa','Igual genera ahorro automático','Se evalúa por accuracy únicamente','Pasa a la fase de modelado'],'Fase 6: una solución que nadie usa no tiene impacto.');
+tf('crisp','CRISP-DM garantiza el éxito del proyecto de minería de datos.',false,'Falso: es un modelo de proceso, no garantía.');
+tf('crisp','Data Preparation suele ser la fase que más tiempo consume.',true,'Verdadero.');
+tf('crisp','Según CRISP-DM, la elección del algoritmo es lo primero que se decide.',false,'Falso: aparece en la fase 4 de Modeling.');
+// ===== KDD =====
+q('kdd','KDD es:',['Proceso iterativo, no trivial y multietapa para obtener patrones válidos, novedosos, útiles y comprensibles','Sinónimo exacto de Data Mining','Un algoritmo de clasificación','Un lenguaje de consulta de bases de datos'],'KDD es el proceso completo; Data Mining es solo una etapa.');
+q('kdd','¿Cuál es la relación entre KDD y Data Mining?',['Data Mining es la etapa 4 dentro del proceso KDD','KDD es una etapa dentro de Data Mining','Son el mismo proceso','Data Mining incluye la selección y la evaluación de KDD'],'Analogía: KDD = construir la casa; DM = levantar la estructura. Invertir la relación es el distractor típico.');
+q('kdd','Orden de etapas de KDD:',['Selección → Preprocesamiento → Transformación → Minería → Interpretación/Evaluación','Preprocesamiento → Selección → Minería → Transformación → Evaluación','Selección → Transformación → Preprocesamiento → Minería → Evaluación','Minería → Selección → Preprocesamiento → Transformación → Evaluación'],'Se selecciona, se limpia, se transforma, se mina y se evalúa. Transformar antes de limpiar es el error común.');
+q('kdd','Corregir/eliminar errores, duplicados y faltantes y unificar formatos corresponde a:',['Preprocesamiento','Transformación','Selección','Minería de datos'],'Preprocesamiento = limpieza. Transformación = adaptar (normalizar, PCA, variables derivadas).');
+q('kdd','Normalizar escalas, reducir dimensiones con PCA y crear variables derivadas es:',['Transformación','Preprocesamiento','Selección','Evaluación'],'Transformación adapta los datos para los algoritmos. La limpieza es preprocesamiento.');
+q('kdd','Elegir fuentes y variables relevantes y descartar lo irrelevante es:',['Selección','Preprocesamiento','Minería de datos','Evaluación'],'Selección usa herramientas como SQL, NiFi, Talend.');
+q('kdd','Las cuatro cualidades del conocimiento descubierto en KDD son:',['Válido, novedoso, útil y comprensible','Preciso, rápido, barato y escalable','Válido, secreto, complejo y masivo','Novedoso, correlacionado, grande y aleatorio'],'Son las 4 cualidades de la definición de KDD.');
+q('kdd','¿Por qué se dice que KDD es "no trivial"?',['Porque los patrones requieren algoritmos de búsqueda e inferencia, no un cálculo directo','Porque necesita siempre redes neuronales','Porque solo lo hacen doctores','Porque no usa datos reales'],'Un promedio es trivial; los patrones ocultos no.');
+q('kdd','Trade-off clásico en KDD:',['Árboles: alta legibilidad pero menor poder predictivo; Redes neuronales: alto poder pero caja negra','Árboles: caja negra y alta precisión; Redes: muy legibles','Ambos son igual de legibles','Las redes neuronales son más legibles que las reglas'],'Legibilidad y poder predictivo se compensan; invertirlos es el distractor.');
+q('kdd','Pañales y cerveza en viernes por la tarde es un ejemplo de:',['Análisis de canasta de compra (reglas de asociación)','Regresión lineal','Clustering K-Means sin etiquetas de producto','Prueba de hipótesis'],'Es el ejemplo clásico de patrones en transacciones de caja (Apriori).');
+q('kdd','Limitación de KDD:',['Dependencia de la calidad de datos; puede hallar patrones falsos por azar','Solo funciona con datos pequeños','No requiere preprocesamiento','No puede usarse en negocios'],'Garbage in, garbage out; correlaciones espurias.');
+q('kdd','La etapa 5 combina métricas técnicas con visualización. Ejemplo de herramienta:',['Power BI / Tableau / Jupyter','Apache NiFi','OpenRefine','Apriori'],'NiFi es selección; OpenRefine preprocesamiento; Apriori es una técnica de minería.');
+tf('kdd','Data Mining y KDD son sinónimos exactos.',false,'Falso: DM es la etapa 4 de KDD.');
+tf('kdd','En KDD, si los resultados finales no sirven se puede regresar a etapas anteriores.',true,'Verdadero: es iterativo.');
+tf('kdd','Las redes neuronales tienen alta legibilidad.',false,'Falso: son cajas negras, aunque muy predictivas.');
+// ===== ML =====
+q('ml','Predecir el precio de una casa es un problema de:',['Regresión','Clasificación','Clustering','Reglas de asociación'],'El precio es numérico continuo → regresión.');
+q('ml','Detectar spam / no spam es:',['Clasificación','Regresión','Clustering','Regresión lineal'],'Salida categórica discreta.');
+q('ml','Segmentar clientes sin etiquetas previas es:',['Clustering (K-Means)','Clasificación supervisada','Regresión logística','Regresión lineal'],'No hay etiquetas → no supervisado.');
+q('ml','¿Por qué la regresión logística clasifica?',['La sigmoide convierte el valor en probabilidad 0–1 y un umbral decide la clase','Porque predice valores continuos ilimitados','Porque agrupa sin etiquetas','Porque usa votación de árboles'],'A pesar del nombre es clasificación.');
+q('ml','Random Forest reduce el sobreajuste frente a un árbol individual porque:',['Combina muchos árboles y decide por votación mayoritaria','Usa un solo árbol muy profundo','Elimina las variables de entrada','Usa centroides'],'Ensamble = robustez. Un árbol solo tiende a memorizar.');
+q('ml','Principal desventaja de un árbol de decisión:',['Alto riesgo de sobreajuste','No es interpretable','No acepta datos categóricos','No sirve para clasificar'],'Su ventaja es la interpretabilidad; la desventaja es el overfitting.');
+q('ml','En KNN es fundamental:',['Escalar las variables para que ninguna domine la distancia','Tener etiquetas ausentes','Usar la sigmoide','Elegir centroides al azar'],'Distancia sensible a escalas.');
+q('ml','Naive Bayes es "ingenuo" porque:',['Asume que las variables son independientes entre sí','Ignora el teorema de Bayes','No usa probabilidades','Solo funciona con números'],'Supone independencia (condicional).');
+q('ml','K-Means funciona así:',['Define K centroides, asigna al más cercano y recalcula hasta estabilizar','Vota entre K árboles','Traza una recta por mínimos cuadrados','Usa sigmoide con umbral K'],'Es no supervisado. Las otras describen Random Forest, regresión lineal y logística.');
+q('ml','Regresión lineal ajusta la recta mediante:',['Mínimos cuadrados','Votación mayoritaria','Distancia a K vecinos','Función sigmoide'],'Minimiza la distancia punto-recta: ŷ = β₀ + β₁x.');
+q('ml','¿Cuál de estas tareas NO requiere etiquetas?',['Clustering','Regresión','Clasificación','Regresión logística'],'Solo clustering es no supervisado.');
+q('ml','Naive Bayes es especialmente eficiente en:',['Texto y datos categóricos (filtros de spam)','Series de tiempo continuas','Imágenes de alta resolución','Segmentación sin etiquetas'],'Rápido y eficiente con texto.');
+tf('ml','La regresión logística es un algoritmo de regresión porque predice números continuos.',false,'Falso: es de clasificación.');
+tf('ml','El aprendizaje supervisado entrena con datos que ya incluyen la respuesta correcta.',true,'Verdadero.');
+tf('ml','En K-Means los datos deben tener etiquetas.',false,'Falso: es no supervisado.');
+// ===== E10 =====
+q('e10','Si el modelo predice positivo pero la realidad es negativo, es:',['Falso Positivo','Falso Negativo','Verdadero Positivo','Verdadero Negativo'],'Dijo Sí, era No → falsa alarma (FP).');
+q('e10','Dijo "No" pero era "Sí" es:',['Falso Negativo','Falso Positivo','Verdadero Negativo','Verdadero Positivo'],'FN: "falsa calma", el más peligroso en medicina.');
+q('e10','En diagnóstico médico donde un FN es crítico, ¿qué métrica priorizar?',['Recall (sensibilidad)','Precision','Accuracy','RMSE'],'Recall = TP/(TP+FN). Precision vigila FP; Accuracy engaña con desbalance; RMSE es de regresión.');
+q('e10','Cuando los falsos positivos son muy costosos (correo normal marcado como spam) se prioriza:',['Precision','Recall','R²','MAE'],'Precision = TP/(TP+FP).');
+q('e10','Fórmula de Precision:',['TP/(TP+FP)','TP/(TP+FN)','(TP+TN)/Total','TN/(TN+FP)'],'La segunda es Recall, la tercera Accuracy, la cuarta Especificidad.');
+q('e10','Fórmula de Recall:',['TP/(TP+FN)','TP/(TP+FP)','(TP+TN)/Total','2PR/(P+R)'],'Recall = detectados entre los realmente positivos. La segunda es Precision; la cuarta F1.');
+q('e10','F1-Score es:',['Media armónica de Precision y Recall','Media aritmética de Accuracy y Recall','Producto de TP y TN','Raíz del MSE'],'La media armónica castiga valores desbalanceados entre P y R. Aritmética/accuracy es el distractor.');
+q('e10','Métrica engañosa cuando casi todos los datos son de una clase:',['Accuracy','F1','Recall','PR-AUC'],'El modelo "todo negativo" tiene accuracy alta sin detectar positivos.');
+q('e10','MAE se mide en:',['La misma unidad que los datos','Unidades al cuadrado','Porcentaje 0–1','Unidades de distancia entre centroides'],'MAE = promedio de |error|. Unidades al cuadrado → MSE.');
+q('e10','MSE castiga severamente los errores grandes porque:',['Eleva los errores al cuadrado antes de promediar','Toma raíz cuadrada','Solo considera el error máximo','Los divide entre N−1'],'El cuadrado amplifica errores grandes; su desventaja son las unidades².');
+q('e10','RMSE se diferencia de MSE en que:',['Aplica raíz cuadrada y regresa a la unidad original','Usa valor absoluto','No castiga errores grandes','Mide % de varianza explicada'],'RMSE=√MSE; conserva el castigo y la unidad original.');
+q('e10','Métrica de regresión que indica % de variabilidad explicada y compara modelos sin importar unidades:',['R²','MAE','MSE','ARI'],'R² es adimensional.');
+q('e10','Silueta evalúa:',['Cohesión interna y separación entre grupos, sin etiquetas','Concordancia con etiquetas reales','Error absoluto','Proporción de falsos negativos'],'Es métrica interna. ARI es externa.');
+q('e10','ARI = 0 significa:',['Agrupamiento equivalente al azar','Coincidencia perfecta','Error absoluto cero','Clusters perfectamente separados'],'ARI=1 es perfecto; 0 es azar.');
+q('e10','¿Qué requiere una métrica externa de clustering?',['Etiquetas reales para comparar','Solo distancias','Un valor de K de vecinos','La sigmoide'],'Externas comparan contra verdad conocida; internas solo estructura.');
+q('e10','TP=40, FP=10, FN=20, TN=30. Precision =',['0.80','0.67','0.70','0.57'],'40/(40+10)=0.80. 0.67 es Recall (40/60); 0.70 es Accuracy.');
+q('e10','Con los mismos datos (TP=40, FP=10, FN=20, TN=30) Recall =',['0.67','0.80','0.70','0.75'],'40/(40+20)=0.667.');
+q('e10','Mismos datos: Accuracy =',['0.70','0.80','0.67','0.75'],'(40+30)/100=0.70.');
+q('e10','Reales 10,20,30; predichos 12,18,33. MAE =',['2.33','5.67','2.38','7'],'Errores 2,2,3 → 7/3=2.33. 5.67 es MSE; 2.38 RMSE; 7 es la suma sin dividir.');
+q('e10','Mismos datos: MSE =',['5.67','2.33','2.38','17'],'(4+4+9)/3=5.67. 17 es la suma sin promediar.');
+tf('e10','Un RMSE siempre es mayor o igual al MAE del mismo modelo.',true,'Verdadero: la raíz del promedio de cuadrados ≥ promedio de absolutos.');
+tf('e10','La Exactitud (accuracy) es la métrica ideal con datos muy desbalanceados.',false,'Falso: es engañosa; se prefiere F1, Precision/Recall.');
+// ===== E9 =====
+q('e9','Un dashboard es:',['La interfaz visual de un Sistema de Soporte a la Decisión','Una base de datos transaccional','Un algoritmo de clustering','Una sola gráfica de barras'],'Un gráfico individual es una visualización; el dashboard junta varias + KPIs + filtros.');
+q('e9','Diferencia entre visualización y dashboard:',['La visualización es un gráfico; el dashboard es la pantalla interactiva que junta varias + KPIs','Son idénticos','El dashboard es un dato y la visualización un modelo','La visualización incluye modelos de IA y el dashboard no'],'Dashboard = HUD completo.');
+q('e9','Componentes de un SSD:',['Datos, Modelos y Dashboard','Datos, Hardware y Contratos','Modelos, Servidores y Firewalls','Dashboard, Usuario y Auditoría'],'Datos limpios + modelos (reglas/estadística/ML) + dashboard.');
+q('e9','KPI significa:',['Key Performance Indicator','Key Process Integration','Knowledge Processing Index','Known Prediction Interval'],'Indicador Clave de Rendimiento.');
+q('e9','¿Quién toma la decisión final en un SSD?',['El ser humano','El modelo de IA','El servidor','El dashboard automáticamente'],'La interfaz es crítica precisamente porque decide la persona.');
+q('e9','Orden de pasos para diseñar un buen dashboard:',['Objetivo → Usuario → Prioridades → Jerarquía visual','Colores → Gráficos → Datos → Objetivo','Usuario → Gráficos → Filtros → Alertas','Modelos → Datos → Servidor → Objetivo'],'Se empieza definiendo qué problema responde.');
+q('e9','La función de dar clic en un dato general y ver el detalle más profundo es:',['Drill-down','Filtro','Alerta','KPI'],'Los filtros recortan por fecha/región; las alertas avisan umbrales.');
+q('e9','Avisos visuales cuando un valor sobrepasa un límite o meta:',['Alertas','Filtros','Drill-down','Mapas'],'Alertas = límites. Los filtros acotan la información.');
+q('e9','¿Cuál es el aporte de la IA en dashboards?',['Detectar patrones, predecir, recomendar y explicar en lenguaje natural','Reemplazar a los datos','Eliminar la necesidad de KPIs','Reemplazar siempre al criterio humano'],'Los dos últimos son justo el riesgo.');
+q('e9','Riesgo de dashboards con IA:',['Confiar ciegamente en recomendaciones y en modelos con datos sesgados','Demasiada claridad visual','Exceso de filtros','Demasiados KPIs imposibles de calcular'],'Pérdida del criterio humano y sesgos.');
+q('e9','Un directivo vs un analista en el diseño:',['El directivo prefiere números resumidos; el analista busca detalles','Ambos requieren el mismo nivel de detalle','El directivo requiere tablas crudas','El analista solo necesita KPIs'],'Conocer al usuario es el paso 2.');
+tf('e9','Un dato por sí solo ya constituye un dashboard.',false,'Falso: dato = unidad básica; dashboard = pantalla integrada.');
+tf('e9','Un mapa de calor es un ejemplo de visualización de datos.',true,'Verdadero, igual que barras o líneas.');
+tf('e9','Un dashboard con IA puede resumir en lenguaje natural qué significan los gráficos.',true,'Verdadero.');
+// ===== E8 =====
+q('e8','Diferencia clave entre anonimización y seudonimización:',['La anonimización es irreversible; la seudonimización es reversible con una llave guardada aparte','La anonimización es reversible; la seudonimización no','Ambas son irreversibles','Ambas dejan los identificadores directos visibles'],'Es la confusión clásica. Los datos seudonimizados siguen siendo personales.');
+q('e8','Reemplazar nombres por códigos únicos guardando la tabla de equivalencias por separado es:',['Seudonimización','Anonimización','Privacidad diferencial','Linaje'],'Hay forma de revertir con la llave → no es anonimización.');
+q('e8','Añadir "ruido" controlado a un conjunto de datos para obtener estadísticas globales sin revelar individuos:',['Privacidad diferencial','Seudonimización','Anonimización','RBAC'],'La diferencial es una técnica matemática.');
+q('e8','Sesgo algorítmico es:',['Error sistemático por prejuicios presentes en los datos de entrenamiento','Fallo de hardware','Un error de redondeo','Dato faltante aleatorio'],'Un modelo que penaliza por género/zona perpetúa desigualdades.');
+q('e8','Equidad (Fairness) busca:',['Trato imparcial a diferentes grupos demográficos','Máxima precisión global','Mínimo costo','Mayor velocidad'],'Evitar sesgos por raza, género, edad, nivel socioeconómico.');
+q('e8','XAI (explicabilidad) sirve para:',['Entender y justificar por qué el modelo tomó una decisión','Cifrar la base de datos','Acelerar el entrenamiento','Eliminar variables'],'Abre las cajas negras (ej. denegación de crédito).');
+q('e8','Responsabilidad (Accountability) define:',['Quién responde legal y moralmente de las fallas del sistema','Quién entrena más rápido','Qué datos se borran','Qué dashboard se usa'],'Desarrolladores, empresa o proveedores de datos.');
+q('e8','Derechos ARCO:',['Acceso, Rectificación, Cancelación, Oposición','Auditoría, Registro, Consentimiento, Obligación','Anonimización, Revocación, Consentimiento, Opción','Acceso, Reutilización, Control, Olvido'],'Derechos del titular en la LFPDPPP (México).');
+q('e8','El derecho al olvido y la portabilidad son parte de:',['GDPR (Unión Europea)','LFPDPPP exclusivamente','El marco ARCO únicamente','CRISP-DM'],'La LFPDPPP otorga ARCO; GDPR introduce olvido y portabilidad.');
+q('e8','Rastrear el origen del dato y cada transformación hasta su uso final es:',['Linaje del dato (Data Lineage)','RBAC','Consentimiento informado','Ciclo de vida'],'Permite auditar en qué etapa se corrompió un dato.');
+q('e8','RBAC es:',['Control de acceso basado en roles','Respaldo automático de bases de datos','Un tipo de anonimización','Auditoría de sesgo'],'Permisos según funciones del usuario.');
+q('e8','¿Qué pilar se pregunta "¿Quién administra, controla y asegura la calidad del dato?"',['Gobernanza','Ética','Privacidad','Explicabilidad'],'Ética: ¿es correcto?; Privacidad: ¿protegemos identidad?');
+q('e8','Anonimizar historiales médicos antes de entrenar un modelo es ejemplo de:',['Privacidad','Gobernanza','Ética algorítmica','Linaje'],'Protege la identidad del usuario.');
+q('e8','Definir quién accede a la base de clientes y auditar su calidad es:',['Gobernanza','Privacidad','Ética','Equidad'],'Gobernanza = reglas, roles, arquitectura y linaje.');
+q('e8','Consentimiento informado implica:',['Saber qué se recolecta y para qué, autorizar y poder revocar','Aceptar términos sin leerlos','Que los datos sean anónimos','Que solo el administrador decida'],'Incluye derecho a revocar.');
+q('e8','Ciclo de vida del dato incluye:',['Creación, almacenamiento, uso, archivo y destrucción segura','Solo captura y almacenamiento','Solo uso y descarte','Modelado y despliegue'],'Políticas completas de principio a fin.');
+tf('e8','La seudonimización es irreversible.',false,'Falso: es reversible con la información adicional guardada aparte.');
+tf('e8','El sesgo algorítmico puede amplificar desigualdades históricas.',true,'Verdadero.');
+tf('e8','La gobernanza se enfoca en derechos del titular, mientras la privacidad en calidad y linaje.',false,'Invertido: gobernanza = calidad, linaje, roles; privacidad = derechos del titular.');
+// ===== P0 =====
+q('p0','Acción con probabilidades conocidas (llueve 40% y baja 25% la afluencia) es:',['Riesgo','Certeza','Incertidumbre','Vaguedad'],'Riesgo = conozco opciones y probabilidades. Si no las conociera sería incertidumbre.');
+q('p0','¿Subirá el dólar frente al euro? (sin probabilidad conocida) es:',['Incertidumbre','Riesgo','Certeza','Lógica difusa'],'No se conoce la probabilidad de ocurrencia.');
+q('p0','Fabricar 1,000 zapatos con costos conocidos es:',['Certeza','Riesgo','Incertidumbre','Vaguedad'],'Resultado conocido necesariamente.');
+q('p0','Tres grandes fuentes de incertidumbre:',['Deficiencias de la información, características del mundo real y deficiencias del modelo','Hardware, software y usuario','Datos, algoritmos y dashboards','Ruido, sesgo y varianza'],'Clasificación formal de la guía.');
+q('p0','Paciente que describe mal sus síntomas o miente:',['Información errónea','Información incompleta','Información imprecisa','Modelo incompleto'],'Errónea = incorrecta. Incompleta = faltan datos. Imprecisa = difícil de cuantificar (dolor, fatiga).');
+q('p0','Dolor y fatiga difíciles de cuantificar objetivamente es:',['Información imprecisa','Información errónea','Mundo real no determinista','Modelo inexacto'],'Imprecisa.');
+q('p0','Las mismas causas producen efectos distintos en distintas personas:',['Mundo real no determinista','Información incompleta','Modelo inexacto','Información errónea'],'Característica del mundo real.');
+q('p0','Parámetros (probabilidades a priori y condicionales) que no están disponibles y se estiman subjetivamente:',['Modelo inexacto','Modelo incompleto','Información imprecisa','Mundo no determinista'],'Incompleto = faltan fenómenos o consenso; inexacto = parámetros mal estimados.');
+q('p0','Las lógicas no monótonas (Reiter, Doyle, Cohen y Grinberg) pertenecen a los métodos:',['Cualitativos','Numéricos','Probabilistas','Difusos'],'Hacen suposiciones que se corrigen; no manejan grados de certeza.');
+q('p0','Desventaja de los métodos cualitativos:',['No consideran distintos grados de certeza de las hipótesis','Requieren muchos datos numéricos','No permiten corregir suposiciones','Solo sirven en medicina'],'Por eso surgen los métodos numéricos.');
+q('p0','¿Quiénes propusieron en el siglo XVIII la probabilidad como creencia personal?',['Bayes y Laplace','Fisher','Zadeh','Savage y de Finetti'],'Fisher fue frecuencia a largo plazo (s. XX); Savage y de Finetti la redescubren en los años 30.');
+q('p0','Para manejar incertidumbre, la IA inicial recurrió a:',['Naive Bayes (probabilismo clásico)','Lógica difusa','Redes neuronales profundas','Algoritmos genéticos'],'La difusa vino después, motivada por la vaguedad.');
+q('p0','Ejemplo seguros: p(sí|E)=0.0210 y p(no|E)=0.0296. Clase asignada:',['no','sí','Empate','No se puede decidir sin P(B)'],'Se elige la mayor: 0.0296 > 0.0210. P(B) es común y no altera la comparación.');
+q('p0','Inconvenientes de Naive Bayes:',['Dificultad para obtener probabilidades condicionales y asunción poco verosímil de independencia condicional','Es muy lento y requiere GPUs','No usa probabilidades','Solo admite 2 atributos'],'Son los dos inconvenientes de la guía.');
+q('p0','MYCIN fue:',['Sistema experto médico para infecciones bacterianas con factores de certeza','Una red bayesiana de los 80','Un sistema de lógica difusa japonés','Un algoritmo de clustering'],'Criticado por falta de rigor probabilístico, lo que motivó las redes bayesianas.');
+q('p0','En una red bayesiana:',['Cada nodo es una variable y cada enlace un mecanismo causal','Cada nodo es una regla if/else','Cada enlace es un grado difuso','Los nodos son documentos'],'Modelo probabilista inspirado en causalidad.');
+q('p0','La lógica difusa de Zadeh nació principalmente para estudiar:',['La vaguedad','La incertidumbre probabilística','La causalidad','El aprendizaje supervisado'],'Pertenencia continua en [0,1].');
+q('p0','500,000 pesetas ahorradas y pertenencia a "pobre" ≈ 0.4–0.5 ilustra:',['Grado de pertenencia en [0,1]','Probabilidad condicional','Factor de certeza de MYCIN','Independencia condicional'],'Conjuntos difusos permiten pertenencia parcial.');
+tf('p0','La lógica difusa mide la probabilidad de que un evento ocurra.',false,'Falso: mide grado de pertenencia a un concepto vago.');
+tf('p0','Las redes bayesianas surgieron a inicios de los 80 como alternativa a los factores de certeza.',true,'Verdadero.');
+tf('p0','La lógica difusa se desarrolló ampliamente en Japón (trenes, cámaras, electrodomésticos).',true,'Verdadero.');
+// ===== P3 =====
+q('p3','La varianza σ² es:',['El promedio de las diferencias a la media elevadas al cuadrado','El promedio de las diferencias absolutas','La raíz cuadrada de la desviación estándar','El dato más repetido'],'El promedio de absolutas es la desviación media; σ=√σ²; el más repetido es la moda.');
+q('p3','Desviación estándar es:',['√ de la varianza','Varianza al cuadrado','Media de |x−x̄|','Mediana de las diferencias'],'σ = √σ².');
+q('p3','Mediana con N impar:',['Valor en la posición (N+1)/2','Posición N/2','Promedio de todos','Valor más frecuente'],'Con datos ordenados. N/2 es para pares.');
+q('p3','Mediana con N par:',['Promedio de los dos datos centrales','El dato en la posición N/2 únicamente','El dato en la posición N+1','La media de todos'],'½(x_{N/2} + x_{N/2+1}).');
+q('p3','Datos 600, 470, 170, 430, 300. La media es:',['394','380','1970','147'],'1970/5=394. 1970 es la suma; 147 es σ.');
+q('p3','Para esos datos la varianza es:',['21,704','108,520','147','394'],'108,520/5 = 21,704. 108,520 es la suma de cuadrados.');
+q('p3','Para esos datos la desviación estándar es ≈',['147 mm','21,704 mm','394 mm','76 mm'],'√21,704≈147. 21,704 es σ².');
+q('p3','Rango normal x̄ ± σ para esos datos:',['247 a 541 mm','394 a 541 mm','170 a 600 mm','100 a 688 mm'],'394−147=247; 394+147=541.');
+q('p3','Porcentaje de datos en μ ± 1σ:',['68.26%','95.44%','99.72%','50%'],'±2σ=95.44%; ±3σ=99.72%.');
+q('p3','Porcentaje de datos en μ ± 2σ:',['95.44%','68.26%','99.72%','34.13%'],'34.13% es un solo lado de ±1σ.');
+q('p3','Porcentaje en μ ± 3σ:',['99.72%','95.44%','68.26%','100%'],'Casi todos, pero no exactamente el 100%.');
+q('p3','La probabilidad P(a ≤ X ≤ b) se calcula como:',['El área bajo la curva de densidad entre a y b','El valor de p(a)','La suma de las alturas de a y b','El valor máximo de la curva'],'Integral de a a b de p(x).');
+q('p3','Al aumentar las observaciones (100→100,000), el histograma:',['Se aproxima a una curva continua: la función de densidad de la población','Se vuelve una recta','Desaparece','Se convierte en la moda'],'La curva representa a toda la población.');
+q('p3','Función de Excel para desviación estándar de una MUESTRA:',['STDEV.S / DESVEST.M','STDEV.P / DESVEST.P','AVERAGE','NORM.DIST'],'STDEV.P es población completa.');
+q('p3','Función de Excel para desviación estándar de la POBLACIÓN completa:',['STDEV.P / DESVEST.P','STDEV.S / DESVEST.M','PROMEDIO','DISTR.NORM.N'],'.S = sample, .P = population.');
+q('p3','En la fórmula normal y = 1/(σ√(2π))·e^(−(x−μ)²/(2σ²)), μ es:',['La media','La desviación estándar','La varianza','Pi'],'σ es desviación estándar; π≈3.14159; e≈2.71828.');
+q('p3','Datos 2,4,4,4,5,5,7,9 (N=8). Desviación estándar poblacional:',['2','4','1.5','5'],'Media 5, suma de cuadrados 32, σ²=4, σ=2. 4 es la varianza; 1.5 la desviación media.');
+q('p3','Mismos datos: mediana',['4.5','4','5','5.5'],'N par: (4+5)/2=4.5. 4 es la moda.');
+q('p3','Mismos datos: desviación media Dm',['1.5','2','4','0.5'],'Σ|x−5|=12; 12/8=1.5.');
+q('p3','Mismos datos: el rango normal x̄ ± σ es',['3 a 7','2 a 9','1 a 9','4 a 6'],'5±2.');
+tf('p3','La desviación estándar mide cuánto se alejan los datos de la media.',true,'Verdadero.');
+tf('p3','La varianza se expresa en las mismas unidades que los datos.',false,'Falso: está al cuadrado (mm²); σ sí está en mm.');
+tf('p3','En una variable continua, p(x) en un punto es directamente una probabilidad.',false,'Falso: la probabilidad es el área en un intervalo.');
+tf('p3','NORM.DIST con acumulado=FALSO devuelve el valor de la función de densidad para x.',true,'Verdadero; con VERDADERO devuelve el área acumulada.');
+// ===== P6 =====
+q('p6','En los datos de lepistos, P(Lepisto = +) =',['3/10','7/10','1/3','3/7'],'3 ejemplos positivos (E1, E4, E6) de 10. 7/10 es el prior de −.');
+q('p6','P(Color = blanco | +) =',['1/3','1/10','1/7','3/3'],'Solo E4 es blanco entre los 3 positivos.');
+q('p6','P(Velocidad = alta | +) =',['3/3','3/10','1/7','4/6'],'Los tres positivos tienen velocidad alta. 4/6 es con Laplace.');
+q('p6','P(Alas = no | −) =',['4/7','4/10','3/7','5/9'],'E2, E3, E5, E8 de 7 negativos. 5/9 es con Laplace.');
+q('p6','P(Tamaño = grande | −) =',['3/7','3/10','4/7','2/7'],'E2, E3, E10.');
+q('p6','Sin Laplace, ejemplo amarillo/sin alas/pequeño/alta, valor para clase + :',['0','0.007','0.00285','0.3'],'P(amarillo|+)=0/3 anula todo el producto.');
+q('p6','Mismo ejemplo sin Laplace, valor para clase − :',['0.007','0','0.00848','0.7'],'7/10·3/7·4/7·2/7·1/7≈0.007.');
+q('p6','Con base en ello, el clasificador (sin Laplace) predice:',['− (no es lepisto)','+ (es lepisto)','Empate','Indeterminado'],'Se elige la mayor probabilidad: 0.007 > 0.');
+q('p6','¿Por qué se necesita el suavizado de Laplace?',['Un valor no visto en una clase da probabilidad 0 y anula todo el producto (sobreajuste)','Para aumentar el tamaño del dataset real','Para normalizar a media 0','Para eliminar atributos'],'Suma ejemplos virtuales para evitar ceros.');
+q('p6','Fórmula de Laplace:',['(n(A=v,C=c)+k)/(n(C=c)+k·|A|)','(n(A=v,C=c)+k)/(N+k)','n(A=v,C=c)/(n(C=c)+k·|A|)','(n(A=v,C=c)+1)/(n(C=c)·|A|)'],'El denominador usa el total de la clase y suma k·|A|. Las demás cambian denominador o quitan k del numerador.');
+q('p6','¿Qué es |A| en la fórmula de Laplace?',['Número de valores distintos posibles del atributo A','Número de atributos del dataset','Número de clases','Número de ejemplos de la clase'],'Para COLOR vale 4; no confundir con n(C=c).');
+q('p6','Cardinalidades correctas (COLOR, ALAS, TAMAÑO, VELOCIDAD):',['4, 2, 3, 3','4, 2, 3, 2','3, 2, 3, 3','5, 2, 3, 3'],'Color {rojo, amarillo, blanco, negro}=4; Alas {sí,no}=2; Tamaño {pequeño, medio, grande}=3; Velocidad {alta, media, baja}=3.');
+q('p6','Con Laplace k=1, P(amarillo | +) =',['1/7','0/3','1/3','1/6'],'(0+1)/(3+4). 1/6 usaría |A|=3 por error.');
+q('p6','Con Laplace k=1, P(no alas | +) =',['1/5','1/3','1/7','0'],'(0+1)/(3+2).');
+q('p6','Con Laplace, P(amarillo | −) =',['4/11','3/7','4/7','3/11'],'(3+1)/(7+4).');
+q('p6','Con Laplace, P(pequeño | +) =',['3/6','2/3','2/6','3/5'],'(2+1)/(3+3).');
+q('p6','Resultado con Laplace para amarillo/sin alas/pequeño/alta:',['(+)=0.002857 y (−)=0.008485 → clase −','(+)=0.008485 y (−)=0.002857 → clase +','(+)=0 y (−)=0.007 → clase −','(+)=0.3 y (−)=0.7 → clase −'],'Aunque ya no hay ceros, la decisión sigue siendo −. La tercera es sin Laplace.');
+q('p6','Nuevo animal: rojo, sí alas, GRANDE, alta. Sin Laplace gana −(0.0026) porque (+)=0. Con Laplace k=1 (+)=0.00762 y (−)=0.00453. ¿Cuál es la clase?',['+','−','Empate','Ya no se puede calcular'],'Laplace cambió la decisión: 0.00762 > 0.00453 → +.');
+q('p6','Nuevo animal: negro, sí, pequeño, alta. Con Laplace (+)=0.0229 y (−)=0.0068. Clase:',['+','−','Empate','Se requiere P(B)'],'Mayor probabilidad → +. P(B) es común.');
+q('p6','Nuevo animal: blanco, no, medio, baja. Sin Laplace ambas clases dan 0. Con Laplace (+)=0.00095, (−)=0.00318. Clase:',['−','+','Empate','Indeterminada'],'Sin Laplace no se puede decidir; con Laplace gana −.');
+q('p6','Al comparar clases en Naive Bayes, ¿qué se hace con P(B) (denominador de Bayes)?',['Se ignora porque es igual para todas las clases','Se suma a cada numerador','Se resta','Se multiplica por k'],'No cambia cuál numerador es mayor.');
+q('p6','Se elige la clase:',['Con mayor probabilidad a posteriori (producto mayor)','Con mayor prior solamente','Con menor probabilidad','Con más atributos coincidentes'],'El prior solo no basta: se multiplica con las condicionales.');
+tf('p6','Un solo factor igual a 0 hace que toda la probabilidad de la clase sea 0.',true,'Verdadero: es producto.');
+tf('p6','En Laplace, n(C=c) es el total de ejemplos del dataset (10).',false,'Falso: es el total de ejemplos de la clase (3 o 7).');
+tf('p6','Normalmente k = 1 en el suavizado de Laplace.',true,'Verdadero.');
+// ===== P7 =====
+q('p7','Truco para nombrar las celdas de la matriz:',['La 2ª palabra es lo que predijo el modelo y la 1ª si acertó o falló','La 1ª palabra es lo predicho y la 2ª si acertó','Ambas palabras indican la clase real','Solo importa la palabra "Falso"'],'En "Falso Positivo", el modelo predijo Positivo y falló.');
+q('p7','Predicción C, Real nc:',['FP','FN','TP','TN'],'Predijo positivo (COVID) pero estaba sano.');
+q('p7','Predicción nc, Real C:',['FN','FP','TP','TN'],'Falsa calma: enfermo enviado a casa.');
+q('p7','Predicción nc, Real nc:',['TN','FN','FP','TP'],'Atinó al decir No.');
+q('p7','Predicción C, Real C:',['TP','TN','FP','FN'],'Atinó al decir Sí.');
+q('p7','En la matriz de la guía (filas = predicción, columnas = real), ¿dónde está FP?',['Fila Predicción C, columna Real nc','Fila Predicción nc, columna Real C','Fila Predicción C, columna Real C','Fila Predicción nc, columna Real nc'],'FP y FN están en la diagonal secundaria; revisa siempre los encabezados.');
+q('p7','Valores de la matriz del ejemplo (12 pacientes):',['TP=5, FP=2, FN=1, TN=4','TP=4, FP=1, FN=2, TN=5','TP=5, FP=1, FN=2, TN=4','TP=6, FP=2, FN=1, TN=3'],'Pacientes TP: 1,4,5,9,10; FP: 2,8; TN: 3,6,7,11; FN: 12.');
+q('p7','Paciente 12: predicción nc, real C. Tipo:',['FN','FP','TN','TP'],'Dijo No pero estaba enfermo.');
+q('p7','Accuracy del ejemplo:',['0.75','0.71','0.83','0.77'],'(5+4)/12. 0.71 es Precision; 0.83 Recall; 0.77 F1.');
+q('p7','Precision del ejemplo:',['5/7 ≈ 0.71','5/6 ≈ 0.83','9/12 = 0.75','4/6 ≈ 0.67'],'TP/(TP+FP)=5/7. 5/6 es Recall; 4/6 Especificidad.');
+q('p7','Recall del ejemplo:',['5/6 ≈ 0.83','5/7 ≈ 0.71','9/12','2/7'],'TP/(TP+FN)=5/6.');
+q('p7','F1 del ejemplo:',['≈ 0.77','≈ 0.75','≈ 0.83','≈ 0.71'],'2·(0.71·0.83)/(0.71+0.83)≈0.77. 0.75 es Accuracy, 0.83 Recall y 0.71 Precision.');
+q('p7','En detección de COVID, ¿qué error es más grave?',['FN','FP','TN','TP'],'Un enfermo no detectado sigue contagiando; el FP solo genera una prueba extra.');
+q('p7','Para minimizar FN en COVID se maximiza:',['Recall','Precision','Especificidad','Accuracy'],'Recall = TP/(TP+FN).');
+q('p7','Total de pacientes realmente con COVID en el ejemplo:',['6','7','5','12'],'TP+FN=5+1. 7 es TP+FP (predichos positivos).');
+q('p7','Total de pacientes que el modelo predijo como COVID:',['7','6','5','9'],'TP+FP=5+2.');
+q('p7','Especificidad del ejemplo (TN/(TN+FP)):',['4/6 ≈ 0.67','5/6 ≈ 0.83','5/7','4/5'],'4/(4+2).');
+q('p7','¿Cuál es el denominador de Accuracy?',['Total de casos (N=12)','TP+FP','TP+FN','TN+FP'],'Accuracy = aciertos/total.');
+tf('p7','Un Falso Positivo en COVID significa que el modelo dijo "No COVID" y el paciente estaba enfermo.',false,'Falso: eso es FN. FP = dijo COVID y estaba sano.');
+tf('p7','TP + TN = 9 en el ejemplo, por eso Accuracy = 0.75.',true,'Verdadero: 9/12.');
+tf('p7','F1 es la media aritmética de Precision y Recall.',false,'Falso: es la media armónica.');const $=s=>document.querySelector(s),sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+let st={read:{},ok:{},known:{},dark:null};try{Object.assign(st,JSON.parse(localStorage.getItem('g3')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('g3',JSON.stringify(st))}catch(e){}};
+if(st.dark===null)st.dark=matchMedia('(prefers-color-scheme: dark)').matches;
+const applyTheme=()=>document.documentElement.classList.toggle('dark',st.dark);applyTheme();
+const sec=id=>S.find(x=>x.id===id);let cur='';let ex=null,last=null;
+const btn='px-4 py-2 rounded-lg font-semibold ';const pri=btn+'bg-indigo-600 text-white hover:bg-indigo-700',sec2=btn+'bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600';
+function prog(){const r=Object.keys(st.read).length/S.length,o=Object.keys(st.ok).length/Q.length,p=Math.round((r+o)*50);$('#pt').textContent='Progreso '+p+'%';$('#pb').style.width=p+'%'}
+function nav(){$('#nv').innerHTML=`<a href="#home" class="block p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700">🏠 Inicio</a>`+S.map(s=>`<a href="#s/${s.id}" class="block p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700 ${cur===s.id?'bg-indigo-100 dark:bg-indigo-900':''}">${s.ic} ${s.n} ${st.read[s.id]?'✅':''}</a>`).join('')+`<hr class="my-2 border-slate-300 dark:border-slate-600"><a href="#exam" class="block p-2 rounded font-bold hover:bg-slate-100 dark:hover:bg-slate-700">📝 Simulador de examen</a><a href="#fc/all" class="block p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-700">🃏 Todas las flashcards</a>`;prog()}
+function route(){const h=location.hash.slice(1)||'home',p=h.split('/');cur=p[0]==='s'||p[0]==='fc'?p[1]:'';$('#nv').classList.add('hidden');nav();window.scrollTo(0,0);
+ if(p[0]==='s')theory(p[1]);else if(p[0]==='fc')cards(p[1]);else if(p[0]==='exam')examCfg();else if(p[0]==='q')search(decodeURIComponent(p[1]||''));else home()}
+function home(){$('#mn').innerHTML=`<h1 class="text-2xl font-bold mb-1">Guía de estudio – Unidad 3</h1><p class="mb-4 text-slate-600 dark:text-slate-300">${S.length} temas · ${Q.length} preguntas · ${S.reduce((a,s)=>a+s.fc.length,0)} flashcards. Lee la teoría, repasa con flashcards y practica en el simulador.</p><div class="grid sm:grid-cols-2 gap-3">${S.map(s=>{const n=Q.filter(q=>q.s===s.id).length,k=Q.reduce((a,q,i)=>a+(q.s===s.id&&st.ok[i]?1:0),0);return`<a href="#s/${s.id}" class="block p-4 rounded-xl bg-white dark:bg-slate-800 shadow hover:shadow-lg border border-slate-200 dark:border-slate-700"><div class="text-2xl">${s.ic}</div><b>${s.n}</b><div class="text-xs mt-1 text-slate-500 dark:text-slate-400">${n} preguntas · ${k} dominadas ${st.read[s.id]?'· ✅ leído':''}</div></a>`}).join('')}</div><div class="mt-5 flex gap-2 flex-wrap"><a href="#exam" class="${pri}">📝 Ir al simulador</a></div>`}
+function tabs(id,a){return`<div class="flex gap-2 mb-3 flex-wrap"><a href="#s/${id}" class="${a===0?pri:sec2}">📖 Teoría</a><a href="#fc/${id}" class="${a===1?pri:sec2}">🃏 Flashcards</a><a href="#exam/${id}" onclick="pre='${id}'" class="${sec2}">📝 Practicar</a></div>`}
+let pre='';
+function theory(id){const s=sec(id);$('#mn').innerHTML=`<h2 class="text-2xl font-bold mb-2">${s.ic} ${s.n}</h2>${tabs(id,0)}<article class="th bg-white dark:bg-slate-800 rounded-xl p-4 shadow">${s.th}</article><div class="mt-4 flex gap-2 flex-wrap"><button id="rd" class="${pri}">${st.read[id]?'✅ Leído (quitar)':'Marcar como leído'}</button><a href="#fc/${id}" class="${sec2}">Siguiente: Flashcards →</a></div>`;$('#rd').onclick=()=>{st.read[id]?delete st.read[id]:st.read[id]=1;save();theory(id);nav()}}
+let deck=[],di=0;
+function cards(id){const all=id==='all',s=all?null:sec(id);deck=all?S.flatMap(x=>x.fc.map(c=>[...c,x.id])):s.fc.map(c=>[...c,id]);di=0;drawCard(id)}
+function drawCard(id){const c=deck[di],k=st.known[c[0]+c[2]];$('#mn').innerHTML=`<h2 class="text-2xl font-bold mb-2">🃏 Flashcards ${id==='all'?'(todas)':'– '+sec(id).n}</h2>${id!=='all'?tabs(id,1):''}<div class="text-sm mb-2">Tarjeta ${di+1} / ${deck.length} ${id==='all'?'· '+sec(c[2]).n:''} ${k?'· ✅ la sé':''}</div><div class="fc" id="fc"><div class="fci"><div class="fcf">${c[0]}</div><div class="fcb">${c[1]}</div></div></div><p class="text-xs text-center mt-1 text-slate-500">Toca la tarjeta para girarla</p><div class="mt-3 flex gap-2 flex-wrap justify-center"><button id="pv" class="${sec2}">←</button><button id="kn" class="${sec2}">${k?'Repasar otra vez':'✅ Ya la sé'}</button><button id="sf" class="${sec2}">🔀 Mezclar</button><button id="nx" class="${pri}">→</button></div>`;
+ $('#fc').onclick=()=>$('#fc').classList.toggle('f');$('#pv').onclick=()=>{di=(di-1+deck.length)%deck.length;drawCard(id)};$('#nx').onclick=()=>{di=(di+1)%deck.length;drawCard(id)};$('#sf').onclick=()=>{deck=sh(deck);di=0;drawCard(id)};$('#kn').onclick=()=>{const key=c[0]+c[2];st.known[key]?delete st.known[key]:st.known[key]=1;save();drawCard(id)}}
+function examCfg(){const h=location.hash.split('/')[1]||pre||'all';pre='';$('#mn').innerHTML=`<h2 class="text-2xl font-bold mb-3">📝 Simulador de examen</h2><div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow space-y-3"><label class="block">Modo / Tema<select id="xs" class="w-full mt-1 p-2 rounded border dark:bg-slate-700 dark:border-slate-600"><option value="all">🎲 Examen GLOBAL (mezclado de todos los temas)</option>${S.map(s=>`<option value="${s.id}" ${h===s.id?'selected':''}>${s.ic} ${s.n} (${Q.filter(q=>q.s===s.id).length})</option>`).join('')}</select></label><label class="block">Número de preguntas<select id="xn" class="w-full mt-1 p-2 rounded border dark:bg-slate-700 dark:border-slate-600"><option value="10">10</option><option value="20">20</option><option value="40">40</option><option value="9999" selected>Todas</option></select></label><label class="block">Tipo<select id="xt" class="w-full mt-1 p-2 rounded border dark:bg-slate-700 dark:border-slate-600"><option value="">Opción múltiple + Verdadero/Falso</option><option value="mc">Solo opción múltiple</option><option value="tf">Solo Verdadero/Falso</option></select></label><button id="go" class="${pri}">Comenzar</button></div>${last&&last.wrong.length?`<button id="rw" class="${sec2} mt-3">🔁 Reintentar ${last.wrong.length} errores del último examen</button>`:''}`;
+ $('#go').onclick=()=>{const s=$('#xs').value,t=$('#xt').value;let ids=Q.map((q,i)=>i).filter(i=>(s==='all'||Q[i].s===s)&&(!t||Q[i].t===t));start(sh(ids).slice(0,+$('#xn').value))};if($('#rw'))$('#rw').onclick=()=>start(sh(last.wrong))}
+function start(ids){ex={l:ids.map(i=>{const q=Q[i];return{i,o:q.t==='tf'?[{t:'Verdadero',k:q.v},{t:'Falso',k:!q.v}]:sh(q.o.map((t,j)=>({t,k:j===0})))}}),p:0,a:[],t0:Date.now()};ask()}
+function ask(){const e=ex.l[ex.p],q=Q[e.i],s=sec(q.s);$('#mn').innerHTML=`<div class="flex justify-between text-sm mb-2"><span>${s.ic} ${s.n}</span><span>Pregunta ${ex.p+1}/${ex.l.length} · ⏱ <b id="tm"></b></span></div><div class="h-1.5 rounded bg-slate-200 dark:bg-slate-700 mb-3"><div class="h-1.5 rounded bg-indigo-500" style="width:${ex.p/ex.l.length*100}%"></div></div><div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow"><div class="text-xs mb-1 text-indigo-600 dark:text-indigo-300">${q.t==='tf'?'VERDADERO / FALSO':'OPCIÓN MÚLTIPLE'}</div><p class="font-semibold mb-2">${q.q}</p>${e.o.map((o,j)=>`<button class="opt" data-j="${j}">${q.t==='tf'?'':'<b>'+'ABCD'[j]+')</b> '}${o.t}</button>`).join('')}<div id="fb"></div></div>`;
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const j=+b.dataset.j,ok=e.o[j].k;ex.a.push({i:e.i,ok});if(ok){st.ok[e.i]=1;save()}document.querySelectorAll('.opt').forEach((x,k)=>{x.disabled=true;if(e.o[k].k)x.classList.add('ok');else if(k===j)x.classList.add('bad')});const last2=ex.p===ex.l.length-1;$('#fb').innerHTML=`<div class="mt-3 p-3 rounded-lg ${ok?'bg-emerald-100 dark:bg-emerald-900':'bg-rose-100 dark:bg-rose-900'}"><b>${ok?'✅ ¡Correcto!':'❌ Incorrecto'}</b><p class="mt-1">${q.w}</p></div><button id="nx" class="${pri} mt-3">${last2?'Ver resultados':'Siguiente →'}</button>`;$('#nx').onclick=()=>{ex.p++;ex.p<ex.l.length?ask():result()};prog()});
+ clearInterval(ex.iv);ex.iv=setInterval(()=>{const t=$('#tm');if(!t)return clearInterval(ex.iv);const d=(Date.now()-ex.t0)/1000|0;t.textContent=(d/60|0)+':'+String(d%60).padStart(2,'0')},500)}
+function result(){clearInterval(ex.iv);const d=(Date.now()-ex.t0)/1000|0,n=ex.a.length,k=ex.a.filter(x=>x.ok).length,w=ex.a.filter(x=>!x.ok).map(x=>x.i);last={wrong:w};const by={};ex.a.forEach(x=>{const s=Q[x.i].s;by[s]=by[s]||[0,0];by[s][1]++;if(x.ok)by[s][0]++});const pc=Math.round(k/n*100);
+ $('#mn').innerHTML=`<h2 class="text-2xl font-bold mb-3">Resultados</h2><div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow"><div class="text-5xl font-extrabold ${pc>=70?'text-emerald-500':'text-rose-500'}">${pc}%</div><p>${k} de ${n} correctas · Tiempo: ${d/60|0}m ${d%60}s · ${pc>=90?'¡Excelente! 🏆':pc>=70?'Bien, sigue repasando 👍':'Necesitas repasar 📚'}</p><h4 class="font-bold mt-4 mb-2">Rendimiento por tema</h4>${Object.entries(by).map(([s,[a,b]])=>`<div class="mb-2 text-sm"><div class="flex justify-between"><span>${sec(s).ic} ${sec(s).n}</span><span>${a}/${b}</span></div><div class="h-3 rounded bg-slate-200 dark:bg-slate-700"><div class="h-3 rounded ${a/b>=.7?'bg-emerald-500':'bg-rose-500'}" style="width:${a/b*100}%"></div></div></div>`).join('')}</div><div class="mt-3 flex gap-2 flex-wrap">${w.length?`<button id="rw" class="${pri}">🔁 Repasar solo mis ${w.length} errores</button>`:''}<a href="#exam" class="${sec2}">Nuevo examen</a></div>${w.length?`<h4 class="font-bold mt-4 mb-2">Preguntas falladas</h4>`+w.map(i=>`<div class="p-3 mb-2 rounded-lg bg-white dark:bg-slate-800 shadow text-sm"><b>${Q[i].q}</b><p class="mt-1 text-slate-600 dark:text-slate-300">${Q[i].w}</p></div>`).join(''):''}`;if($('#rw'))$('#rw').onclick=()=>start(sh(w));nav()}
+let idx=null;function buildIdx(){idx=[];S.forEach(s=>{const d=document.createElement('div');d.innerHTML=s.th;d.querySelectorAll('li,p,tr,details').forEach(e=>{if(e.tagName!=='DETAILS'&&e.closest('details'))return;const t=e.textContent.trim().replace(/\s+/g,' ');if(t.length>3)idx.push({s:s.id,t,k:'📖',n:norm(t)})});s.fc.forEach(c=>idx.push({s:s.id,t:c[0]+' → '+c[1],k:'🃏',n:norm(c[0]+' '+c[1])}))})}
+function search(t){if(!idx)buildIdx();$('#se').value=t;const n=norm(t.trim());if(!n)return home();const r=idx.filter(x=>x.n.includes(n)).slice(0,40),re=new RegExp('('+t.trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+ $('#mn').innerHTML=`<h2 class="text-xl font-bold mb-3">Resultados para «${t}» (${r.length})</h2>`+(r.map(x=>`<a href="#s/${x.s}" class="block p-3 mb-2 rounded-lg bg-white dark:bg-slate-800 shadow text-sm"><span class="text-xs text-indigo-600 dark:text-indigo-300">${x.k} ${sec(x.s).n}</span><br>${(x.t.length>260?x.t.slice(0,260)+'…':x.t).replace(/</g,'&lt;').replace(re,'<mark>$1</mark>')}</a>`).join('')||'Sin resultados.')}
+$('#se').oninput=e=>{const v=e.target.value;location.hash=v.trim()?'#q/'+encodeURIComponent(v):'#home'};
+$('#th').onclick=()=>{st.dark=!st.dark;save();applyTheme()};$('#mb').onclick=()=>$('#nv').classList.toggle('hidden');
+addEventListener('hashchange',route);route();
+</script></body></html>
